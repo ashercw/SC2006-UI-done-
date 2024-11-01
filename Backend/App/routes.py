@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from .models import WorkoutList, Sleep, db
 from datetime import datetime, time
+from controllers import schedule_workout, track_workout
 
 api_bp = Blueprint('api', __name__)
 
@@ -15,6 +16,20 @@ def add_workout():
     db.session.add(new_workout)
     db.session.commit()
     return jsonify({"message": "Workout added successfully"}), 201
+
+# Route to retrieve a workout by ID
+@api_bp.route('/workouts/<int:id>', methods=['GET'])
+def track_workout(id):
+    workout = WorkoutList.query.get(id)
+    if workout:
+        return jsonify({
+            "workoutType": workout.workoutType,
+            "difficulty": workout.difficulty,
+            "duration": workout.duration
+        }), 200
+    else:
+        return jsonify({"message": "Workout not found"}), 404
+    
 
 @api_bp.route('/sleep', methods=['POST'])
 def add_sleep():

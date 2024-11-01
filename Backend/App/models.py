@@ -15,9 +15,10 @@ class WorkoutList(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, default=datetime.utcnow)
 
-    def __repr__(self):
-        return f'<Workout {self.workoutType}>'
-
+    def __init__(self, workoutType, difficulty, duration, date):
+        self.workoutType = workoutType
+        self.difficulty = difficulty
+        self.duration = duration
 
 
 # User Model
