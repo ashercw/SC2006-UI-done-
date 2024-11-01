@@ -13,6 +13,7 @@ import MealTracker from './Components/MealTracker/MealTracker';
 import WorkoutManager from './Components/WorkoutManager/WorkoutManager';
 import Progress from './Components/Progress/Progress';
 import Settings from './Components/Settings/Settings';
+import SleepTracker from './Components/SleepTracker/SleepTracker';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/workout-manager" element={<WorkoutManager />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/sleep-tracker" element={<SleepTracker />} />
             </Routes>
             
             {/* Toast notifications */}
