@@ -1,0 +1,28 @@
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.about-container h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.mission-section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.mission-section h2 {
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.about-container p {
+    line-height: 1.6;
+    color: #666;
+}
