@@ -1,12 +1,13 @@
 import './App.css';
 import './styles/common.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { LoadingProvider } from './contexts/LoadingContext';
 import ErrorBoundary from './Components/ErrorBoundary/ErrorBoundary';
-import LoginSignup from './Components/LoginSignup/LoginSignup';
+import Login from './Components/Login/Login';
+import Signup from './Components/Signup/Signup';
 import About from './Components/About/About';
 import Homepage from './Components/Homepage/Homepage';
 import MealTracker from './Components/MealTracker/MealTracker';
@@ -22,7 +23,9 @@ function App() {
         <Router>
           <div className="app-container">
             <Routes>
-              <Route path="/" element={<LoginSignup />} />
+              <Route path="/" element={<Navigate to="/login" />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/about" element={<About />} />
               <Route path="/homepage" element={<Homepage />} />
               <Route path="/meal-tracker" element={<MealTracker />} />
