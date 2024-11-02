@@ -4,7 +4,6 @@ import 'react-calendar/dist/Calendar.css';
 import './WorkoutManager.css';
 
 const WorkoutManager = () => {
-  const [date, setDate] = useState(new Date());
   const [workouts, setWorkouts] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [workoutForm, setWorkoutForm] = useState({
@@ -47,6 +46,14 @@ const WorkoutManager = () => {
       duration: '',
       intensity: 'medium',
       notes: ''
+    });
+  };
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   };
 
@@ -138,6 +145,25 @@ const WorkoutManager = () => {
               <p>{weeklySummary.completedGoals}</p>
             </div>
           </div>
+        </div>
+
+        <div className="workouts-list-section">
+          <h2>Logged Workouts</h2>
+          {workouts.length === 0 ? (
+            <p>No workouts logged yet</p>
+          ) : (
+            <div className="workouts-list">
+              {workouts.map(workout => (
+                <div key={workout.id} className="workout-item">
+                  <h3>{workout.type}</h3>
+                  <p>Date: {formatDate(workout.date)}</p>
+                  <p>Duration: {workout.duration} minutes</p>
+                  <p>Intensity: {workout.intensity}</p>
+                  {workout.notes && <p>Notes: {workout.notes}</p>}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

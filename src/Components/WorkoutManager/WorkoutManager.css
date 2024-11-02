@@ -119,6 +119,39 @@
   font-weight: 600;
 }
 
+/* Workouts List Section */
+.workouts-list-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.workouts-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.workout-item {
+  background: #f8f9fa;
+  padding: 1.2rem;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.workout-item h3 {
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.workout-item p {
+  color: #666;
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .workout-container {
@@ -134,6 +167,18 @@
 .react-calendar {
   border: none !important;
   font-family: inherit !important;
+}
+
+.react-calendar__tile {
+  color: #000 !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #d10000 !important;
+}
+
+.react-calendar__navigation button {
+  color: #000 !important;
 }
 
 .react-calendar__tile--active {

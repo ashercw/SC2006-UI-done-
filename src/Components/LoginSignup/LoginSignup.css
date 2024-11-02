@@ -88,6 +88,11 @@
     padding-right: 20px;
 }
 
+/* Name input specific styles */
+.input:has(input[placeholder="Name"]) {
+    border: none;
+}
+
 /* Error message styles */
 .error-message {
     color: #dc3545;
@@ -300,3 +305,4 @@
         color: #f00;
     }
 }
+
