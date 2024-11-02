@@ -52,22 +52,59 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    grid-column: 1 / -1;
 }
 
-.add-meal-btn:hover {
+.add-meal-btn:hover:not(:disabled) {
     background-color: #45a049;
 }
 
-.calorie-summary {
+.add-meal-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    color: #d32f2f;
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.nutrition-summary {
     text-align: center;
     margin-top: 20px;
-    padding: 15px;
+    padding: 20px;
     background-color: #e8f5e9;
     border-radius: 4px;
 }
 
+.nutrition-summary h3 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.nutrition-totals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.nutrition-totals div {
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-weight: bold;
+    color: #333;
+}
+
 .meal-history {
     margin-top: 30px;
+    color: #cccccc;
 }
 
 .date-group {
@@ -93,11 +130,12 @@
 
 .meal-item {
     display: grid;
-    grid-template-columns: 100px 1fr 100px;
+    grid-template-columns: 100px 1fr auto;
     align-items: center;
-    padding: 10px;
+    padding: 15px;
     background-color: #f9f9f9;
     border-radius: 4px;
+    gap: 15px;
 }
 
 .meal-type {
@@ -110,8 +148,32 @@
     color: #333;
 }
 
-.meal-calories {
-    text-align: right;
+.meal-nutrition {
+    display: flex;
+    gap: 15px;
+    color: #666;
+    font-size: 0.9em;
+    flex-wrap: wrap;
+}
+
+.meal-nutrition span {
+    background-color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.meal-nutrition span:first-child {
     color: #e91e63;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .meal-item {
+        grid-template-columns: 1fr;
+    }
+    
+    .meal-nutrition {
+        justify-content: flex-start;
+    }
 }

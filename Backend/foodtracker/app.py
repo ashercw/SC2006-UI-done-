@@ -1,57 +1,37 @@
 from flask import Flask, request, jsonify
 from usda import get_usda_nutrition
-import spacy
-from word2number import w2n
+from flask_cors import CORS
 import os 
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
-nlp = spacy.load("en_core_web_sm")  # Load spaCy model
-
-
-USDA_API_KEY = os.getenv("API_KEY")  
-
-def parse_food_items(text):
-    """Extract food items and quantities from text."""
-    doc = nlp(text)
-    results = []
-    current_quantity = None
-
-    for token in doc:
-        if token.like_num:  # Recognize numbers
-            try:
-                current_quantity = w2n.word_to_num(token.text)
-            except ValueError:
-                current_quantity = int(token.text)
-
-        elif current_quantity is not None and token.pos_ == "NOUN":
-            food_item = token.text
-            results.append((food_item, current_quantity))
-            current_quantity = None  # Reset after use
-
-    return results
+CORS(app)  # Enable CORS for all routes
 
 @app.route('/nutrition', methods=['POST'])
 def nutrition_info():
     data = request.json
-    text = data.get("text")
-    food_items = parse_food_items(text)
-    results = {}
+    food_name = data.get("food_name")
+    quantity = float(data.get("quantity", 100))  # Default to 100g if not provided
+    
+    if not food_name:
+        return jsonify({"error": "Food name is required"}), 400
 
-    for food_item, quantity in food_items:
-        nutrition_data = get_usda_nutrition(USDA_API_KEY, food_item)
-        if nutrition_data:
-            # Scale nutrition based on the quantity detected
-            factor = quantity / 100
-            scaled_nutrition = {k: round(v * factor, 2) for k, v in nutrition_data.items()}
-            results[food_item] = {"quantity": quantity, "nutrition": scaled_nutrition}
-        else:
-            results[food_item] = {"error": "Nutritional information not found"}
-
-    return jsonify(results), 200
+    nutrition_data = get_usda_nutrition(food_name)
+    if nutrition_data:
+        # Scale nutrition based on the quantity
+        factor = quantity / 100
+        scaled_nutrition = {
+            "description": nutrition_data["description"],
+            "calories": round(nutrition_data["calories"] * factor, 2),
+            "protein": round(nutrition_data["protein"] * factor, 2),
+            "fat": round(nutrition_data["fat"] * factor, 2),
+            "carbohydrates": round(nutrition_data["carbohydrates"] * factor, 2)
+        }
+        return jsonify(scaled_nutrition), 200
+    else:
+        return jsonify({"error": "Nutritional information not found"}), 404
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    app.run(debug=True, port=5001)
