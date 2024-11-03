@@ -157,7 +157,7 @@ const Signup = () => {
                         <div className="input">
                             <img src={user_icon} alt="" className="image-size"/>
                             <input 
-                                type="text" 
+                                type="name" 
                                 placeholder="First Name"
                                 name="first_name"
                                 value={formData.first_name}
@@ -171,7 +171,7 @@ const Signup = () => {
                         <div className="input">
                             <img src={user_icon} alt="" className="image-size"/>
                             <input 
-                                type="text" 
+                                type="name" 
                                 placeholder="Last Name"
                                 name="last_name"
                                 value={formData.last_name}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Homepage.css';
-import HealthMonitoring from '../HealthMonitoring/HealthMonitoring';
 
 const Homepage = () => {
   // Mock data for demonstration
@@ -23,6 +22,7 @@ const Homepage = () => {
           <li className="active">Dashboard</li>
           <li><Link to="/workout-manager">Workouts</Link></li>
           <li><Link to="/meal-tracker">Nutrition</Link></li>
+          <li><Link to="/health-monitoring">Health Monitoring</Link></li>
           <li><Link to="/progress">Progress</Link></li>
           <li><Link to="/settings">Settings</Link></li>
         </ul>
@@ -80,12 +80,9 @@ const Homepage = () => {
           <div className="action-buttons">
             <Link to="/workout-manager"><button>Start Workout</button></Link>
             <Link to="/meal-tracker"><button>Log Nutrition</button></Link>
-            <button>View Goals</button>
+            <Link to="/health-monitoring"><button>View Health Goals</button></Link>
           </div>
         </section>
-
-        {/* Health Monitoring Section */}
-        <HealthMonitoring />
       </main>
     </div>
   );

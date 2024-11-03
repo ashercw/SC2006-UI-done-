@@ -15,6 +15,7 @@ import WorkoutManager from './Components/WorkoutManager/WorkoutManager';
 import Progress from './Components/Progress/Progress';
 import Settings from './Components/Settings/Settings';
 import SleepTracker from './Components/SleepTracker/SleepTracker';
+import HealthMonitoring from './Components/HealthMonitoring/HealthMonitoring';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/progress" element={<Progress />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/sleep-tracker" element={<SleepTracker />} />
+              <Route path="/health-monitoring" element={<HealthMonitoring />} />
             </Routes>
             
             {/* Toast notifications */}
