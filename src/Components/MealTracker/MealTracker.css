@@ -7,7 +7,7 @@
 
 .meal-tracker h2 {
     text-align: center;
-    color: #fff;
+    color: #333;
     margin-bottom: 30px;
 }
 
@@ -104,7 +104,7 @@
 
 .meal-history {
     margin-top: 30px;
-    color: #cccccc;
+    color: #333;
 }
 
 .date-group {
