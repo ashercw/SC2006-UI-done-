@@ -14,3 +14,6 @@ python3 app.py&
 cd ..
 cd ..
 npm start 
+
+
+
