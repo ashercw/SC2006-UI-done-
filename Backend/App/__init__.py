@@ -40,6 +40,7 @@ def create_app():
         
         # Create database tables
         db.create_all()
+        print("Database tables created successfully")  # Debug print
 
     _app = app
     

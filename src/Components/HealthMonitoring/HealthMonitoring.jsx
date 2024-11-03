@@ -13,6 +13,8 @@ const HealthMonitoring = () => {
   const [sleepHistory, setSleepHistory] = useState([]);
   const [showDuration, setShowDuration] = useState(false);
   const [currentDuration, setCurrentDuration] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [goals, setGoals] = useState({
     sleepGoal: '',
@@ -28,18 +30,23 @@ const HealthMonitoring = () => {
 
   const fetchSleepHistory = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/sleep', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      setLoading(true);
+      setError(null);
+      const response = await fetch('/api/sleep');
       if (response.ok) {
         const data = await response.json();
-        setSleepHistory(data.sleep_records || []);
+        const sortedRecords = (data.sleep_records || []).sort((a, b) => 
+          new Date(b.date) - new Date(a.date)
+        );
+        setSleepHistory(sortedRecords);
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to fetch sleep records:', errorData);
       }
     } catch (error) {
       console.error('Error fetching sleep history:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,39 +69,34 @@ const HealthMonitoring = () => {
 
   const handleSleepSubmit = async (e) => {
     e.preventDefault();
-    const duration = calculateDuration(sleepData.sleepTime, sleepData.wakeTime);
-    setCurrentDuration(duration);
-    setShowDuration(true);
-
-    const backendData = {
-      date: sleepData.date,
-      sleepTime: sleepData.sleepTime,
-      wakeTime: sleepData.wakeTime,
-      quality: sleepData.quality
-    };
+    setLoading(true);
+    setError(null);
 
     try {
-      const token = localStorage.getItem('token');
+      const duration = calculateDuration(sleepData.sleepTime, sleepData.wakeTime);
+      setCurrentDuration(duration);
+      setShowDuration(true);
+
       const response = await fetch('/api/sleep', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(backendData)
+        body: JSON.stringify({
+          date: sleepData.date,
+          sleepTime: sleepData.sleepTime,
+          wakeTime: sleepData.wakeTime,
+          quality: sleepData.quality
+        })
       });
 
       if (response.ok) {
-        const newRecord = {
-          date: sleepData.date,
-          bed_time: sleepData.sleepTime,
-          wake_time: sleepData.wakeTime,
-          duration: duration,
-          quality: sleepData.quality
-        };
+        const result = await response.json();
+        
+        // Add the new record to the sleep history
+        setSleepHistory(prevHistory => [result.sleep_record, ...prevHistory]);
 
-        setSleepHistory(prevHistory => [newRecord, ...prevHistory]);
-
+        // Clear the form
         setSleepData({
           sleepTime: '',
           wakeTime: '',
@@ -102,49 +104,22 @@ const HealthMonitoring = () => {
           date: new Date().toISOString().split('T')[0]
         });
 
-        fetchSleepHistory();
+        // Refresh the sleep history
+        await fetchSleepHistory();
       } else {
         const errorData = await response.json();
-        console.error('Failed to save sleep data:', errorData);
+        throw new Error(errorData.error || 'Failed to save sleep record');
       }
     } catch (error) {
       console.error('Error saving sleep data:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleGoalSubmit = (e) => {
-    e.preventDefault();
-    console.log('Goals submitted:', goals);
   };
 
   return (
-    <div className="homepage-container">
-      {/* Navigation Menu */}
-      <nav className="nav-menu">
-        <div className="nav-header">
-          <h2>FitTrack</h2>
-        </div>
-        <ul className="nav-links">
-          <li><Link to="/homepage">Dashboard</Link></li>
-          <li><Link to="/workout-manager">Workouts</Link></li>
-          <li><Link to="/meal-tracker">Nutrition</Link></li>
-          <li className="active">Health Monitoring</li>
-          <li><Link to="/progress">Progress</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
-        </ul>
-      </nav>
-
+    <div className="health-monitoring-container">
       <main className="main-content">
         <div className="health-monitoring">
           <h2>Health Monitoring</h2>
@@ -191,8 +166,16 @@ const HealthMonitoring = () => {
                   onChange={(e) => setSleepData({...sleepData, date: e.target.value})}
                 />
               </div>
-              <button type="submit">Log Sleep</button>
+              <button type="submit" disabled={loading}>
+                {loading ? 'Saving...' : 'Log Sleep'}
+              </button>
             </form>
+
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
 
             {showDuration && currentDuration && (
               <div className="sleep-duration-result">
@@ -208,10 +191,12 @@ const HealthMonitoring = () => {
           </section>
 
           {/* Sleep History */}
-          {sleepHistory.length > 0 && (
-            <section className="sleep-history">
-              <h3>Sleep History</h3>
-              <div className="history-table">
+          <section className="sleep-history">
+            <h3>Sleep History</h3>
+            <div className="history-table">
+              {loading ? (
+                <p>Loading sleep records...</p>
+              ) : sleepHistory.length > 0 ? (
                 <table>
                   <thead>
                     <tr>
@@ -234,49 +219,57 @@ const HealthMonitoring = () => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </section>
-          )}
+              ) : (
+                <p className="no-data-message">No sleep records available yet. Start tracking your sleep above!</p>
+              )}
+            </div>
+          </section>
 
           {/* Progress Visualization */}
-          {sleepHistory.length > 0 && (
-            <section className="progress-visualization">
-              <h3>Sleep Progress</h3>
-              <div className="progress-container">
-                <div className="progress-graph">
-                  {sleepHistory.slice(0, 7).map((record, index) => (
-                    <div key={index} className="graph-bar-container">
-                      <div 
-                        className="graph-bar"
-                        style={{
-                          height: `${(record.duration / 12) * 100}%`,
-                          backgroundColor: record.duration >= 7 ? '#4CAF50' : '#FF9800'
-                        }}
-                      >
-                        <div className="graph-tooltip">
-                          <p>Date: {new Date(record.date).toLocaleDateString()}</p>
-                          <p>Sleep: {record.bed_time}</p>
-                          <p>Wake: {record.wake_time}</p>
-                          <p>Duration: {record.duration}h</p>
+          <section className="progress-visualization">
+            <h3>Sleep Progress</h3>
+            <div className="progress-container">
+              {loading ? (
+                <p>Loading sleep progress...</p>
+              ) : sleepHistory.length > 0 ? (
+                <>
+                  <div className="progress-graph">
+                    {sleepHistory.slice(0, 7).map((record, index) => (
+                      <div key={index} className="graph-bar-container">
+                        <div 
+                          className="graph-bar"
+                          style={{
+                            height: `${(record.duration / 12) * 100}%`,
+                            backgroundColor: record.duration >= 7 ? '#4CAF50' : '#FF9800'
+                          }}
+                        >
+                          <div className="graph-tooltip">
+                            <p>Date: {new Date(record.date).toLocaleDateString()}</p>
+                            <p>Sleep: {record.bed_time}</p>
+                            <p>Wake: {record.wake_time}</p>
+                            <p>Duration: {record.duration}h</p>
+                          </div>
                         </div>
+                        <div className="graph-date">{formatDate(record.date)}</div>
                       </div>
-                      <div className="graph-date">{formatDate(record.date)}</div>
+                    ))}
+                  </div>
+                  <div className="graph-legend">
+                    <div className="legend-item">
+                      <span className="legend-color" style={{backgroundColor: '#4CAF50'}}></span>
+                      <span>7+ hours (Recommended)</span>
                     </div>
-                  ))}
-                </div>
-                <div className="graph-legend">
-                  <div className="legend-item">
-                    <span className="legend-color" style={{backgroundColor: '#4CAF50'}}></span>
-                    <span>7+ hours (Recommended)</span>
+                    <div className="legend-item">
+                      <span className="legend-color" style={{backgroundColor: '#FF9800'}}></span>
+                      <span>Less than 7 hours</span>
+                    </div>
                   </div>
-                  <div className="legend-item">
-                    <span className="legend-color" style={{backgroundColor: '#FF9800'}}></span>
-                    <span>Less than 7 hours</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
+                </>
+              ) : (
+                <p className="no-data-message">No sleep data available yet. Your sleep progress will be shown here once you start tracking.</p>
+              )}
+            </div>
+          </section>
 
           <section className="posture-upload">
             <h3>Posture Analysis</h3>
@@ -284,7 +277,16 @@ const HealthMonitoring = () => {
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleImageUpload}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setSelectedImage(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
                 id="posture-upload"
               />
               <label htmlFor="posture-upload" className="upload-button">
@@ -300,7 +302,10 @@ const HealthMonitoring = () => {
 
           <section className="goal-setting">
             <h3>Set Health Goals</h3>
-            <form onSubmit={handleGoalSubmit}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              console.log('Goals submitted:', goals);
+            }}>
               <div className="form-group">
                 <label>Daily Sleep Goal (hours):</label>
                 <input

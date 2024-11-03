@@ -13,21 +13,6 @@ const Homepage = () => {
 
   return (
     <div className="homepage-container">
-      {/* Navigation Menu */}
-      <nav className="nav-menu">
-        <div className="nav-header">
-          <h2>FitTrack</h2>
-        </div>
-        <ul className="nav-links">
-          <li className="active">Dashboard</li>
-          <li><Link to="/workout-manager">Workouts</Link></li>
-          <li><Link to="/meal-tracker">Nutrition</Link></li>
-          <li><Link to="/health-monitoring">Health Monitoring</Link></li>
-          <li><Link to="/progress">Progress</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
-        </ul>
-      </nav>
-
       {/* Main Content */}
       <main className="main-content">
         <header className="dashboard-header">

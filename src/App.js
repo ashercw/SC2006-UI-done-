@@ -14,10 +14,41 @@ import MealTracker from './Components/MealTracker/MealTracker';
 import WorkoutManager from './Components/WorkoutManager/WorkoutManager';
 import Progress from './Components/Progress/Progress';
 import Settings from './Components/Settings/Settings';
-import SleepTracker from './Components/SleepTracker/SleepTracker';
 import HealthMonitoring from './Components/HealthMonitoring/HealthMonitoring';
+import MenuPopup from './Components/MenuPopup/MenuPopup';
+import { useLocation } from 'react-router-dom';
+
+// Layout wrapper component that includes the MenuPopup
+const PageLayout = ({ children }) => {
+  const location = useLocation();
+  const noMenuPaths = ['/login', '/signup'];
+  
+  return (
+    <div className="page-layout">
+      {!noMenuPaths.includes(location.pathname) ? (
+        <>
+          <link 
+            rel="stylesheet" 
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+          />
+          <main className="content-wrapper">
+            {children}
+          </main>
+          <MenuPopup />
+        </>
+      ) : (
+        children
+      )}
+    </div>
+  );
+};
 
 function App() {
+  // Initialize body dataset
+  if (typeof document !== 'undefined') {
+    document.body.dataset.menu = "false";
+  }
+
   return (
     <ErrorBoundary>
       <LoadingProvider>
@@ -25,19 +56,53 @@ function App() {
           <div className="app-container">
             <Routes>
               <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/homepage" element={<Homepage />} />
-              <Route path="/meal-tracker" element={<MealTracker />} />
-              <Route path="/workout-manager" element={<WorkoutManager />} />
-              <Route path="/progress" element={<Progress />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/sleep-tracker" element={<SleepTracker />} />
-              <Route path="/health-monitoring" element={<HealthMonitoring />} />
+              <Route path="/login" element={
+                <PageLayout>
+                  <Login />
+                </PageLayout>
+              } />
+              <Route path="/signup" element={
+                <PageLayout>
+                  <Signup />
+                </PageLayout>
+              } />
+              <Route path="/about" element={
+                <PageLayout>
+                  <About />
+                </PageLayout>
+              } />
+              <Route path="/homepage" element={
+                <PageLayout>
+                  <Homepage />
+                </PageLayout>
+              } />
+              <Route path="/meal-tracker" element={
+                <PageLayout>
+                  <MealTracker />
+                </PageLayout>
+              } />
+              <Route path="/workout-manager" element={
+                <PageLayout>
+                  <WorkoutManager />
+                </PageLayout>
+              } />
+              <Route path="/progress" element={
+                <PageLayout>
+                  <Progress />
+                </PageLayout>
+              } />
+              <Route path="/settings" element={
+                <PageLayout>
+                  <Settings />
+                </PageLayout>
+              } />
+              <Route path="/health-monitoring" element={
+                <PageLayout>
+                  <HealthMonitoring />
+                </PageLayout>
+              } />
             </Routes>
             
-            {/* Toast notifications */}
             <ToastContainer
               position="top-right"
               autoClose={5000}
