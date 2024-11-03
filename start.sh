@@ -5,11 +5,12 @@ pip3 install -r requirements.txt
 
 # Start Flask backend
 cd Backend
-python3 -m flask --app App run &
+# Run the Flask app in the background
+python3 run.py&
 
-# Wait for Flask to start
-sleep 2
+cd foodtracker
+python3 app.py&
 
-# Start React frontend
 cd ..
-npm start
+cd ..
+npm start 
