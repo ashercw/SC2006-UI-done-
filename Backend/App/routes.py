@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from . import db
-from .models import User
+from .models import User, Sleep
 from datetime import datetime, timedelta
 import jwt
 from functools import wraps
@@ -141,3 +141,135 @@ def init_auth_routes(app):
                 'last_name': current_user.last_name
             }
         }), 200
+
+    # Sleep tracking routes
+    @app.route('/api/sleep', methods=['POST'])
+    @token_required
+    def add_sleep_record(current_user):
+        try:
+            data = request.get_json()
+            
+            # Convert string times to Time objects
+            date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+            bed_time = datetime.strptime(data['sleepTime'], '%H:%M').time()
+            wake_time = datetime.strptime(data['wakeTime'], '%H:%M').time()
+            
+            # Create new sleep record
+            sleep_record = Sleep(
+                user_id=current_user.id,
+                date=date,
+                bed_time=bed_time,
+                wake_time=wake_time
+            )
+            
+            # Add and commit to database
+            db.session.add(sleep_record)
+            db.session.commit()
+            
+            return jsonify({
+                'message': 'Sleep record added successfully',
+                'sleep_record': {
+                    'id': sleep_record.id,
+                    'date': sleep_record.date.strftime('%Y-%m-%d'),
+                    'bed_time': sleep_record.bed_time.strftime('%H:%M'),
+                    'wake_time': sleep_record.wake_time.strftime('%H:%M'),
+                    'duration': sleep_record.sleep_duration,
+                    'quality': data.get('quality', 'good')
+                }
+            }), 201
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error adding sleep record: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/api/sleep', methods=['GET'])
+    @token_required
+    def get_sleep_records(current_user):
+        try:
+            # Get date range from query parameters
+            start_date = request.args.get('start_date')
+            end_date = request.args.get('end_date')
+            
+            query = Sleep.query.filter_by(user_id=current_user.id)
+            
+            if start_date:
+                start = datetime.strptime(start_date, '%Y-%m-%d').date()
+                query = query.filter(Sleep.date >= start)
+            
+            if end_date:
+                end = datetime.strptime(end_date, '%Y-%m-%d').date()
+                query = query.filter(Sleep.date <= end)
+            
+            sleep_records = query.order_by(Sleep.date.desc()).all()
+            
+            return jsonify({
+                'sleep_records': [{
+                    'id': record.id,
+                    'date': record.date.strftime('%Y-%m-%d'),
+                    'bed_time': record.bed_time.strftime('%H:%M'),
+                    'wake_time': record.wake_time.strftime('%H:%M'),
+                    'duration': record.sleep_duration,
+                    'quality': 'good'  # Default quality
+                } for record in sleep_records]
+            }), 200
+            
+        except Exception as e:
+            print(f"Error getting sleep records: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/api/sleep/<int:record_id>', methods=['PUT'])
+    @token_required
+    def update_sleep_record(current_user, record_id):
+        sleep_record = Sleep.query.filter_by(id=record_id, user_id=current_user.id).first()
+        
+        if not sleep_record:
+            return jsonify({'error': 'Sleep record not found'}), 404
+            
+        try:
+            data = request.get_json()
+            
+            if 'date' in data:
+                sleep_record.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+            if 'sleepTime' in data:
+                sleep_record.bed_time = datetime.strptime(data['sleepTime'], '%H:%M').time()
+            if 'wakeTime' in data:
+                sleep_record.wake_time = datetime.strptime(data['wakeTime'], '%H:%M').time()
+            
+            sleep_record.sleep_duration = sleep_record.get_sleep_duration()
+            db.session.commit()
+            
+            return jsonify({
+                'message': 'Sleep record updated successfully',
+                'sleep_record': {
+                    'id': sleep_record.id,
+                    'date': sleep_record.date.strftime('%Y-%m-%d'),
+                    'bed_time': sleep_record.bed_time.strftime('%H:%M'),
+                    'wake_time': sleep_record.wake_time.strftime('%H:%M'),
+                    'duration': sleep_record.sleep_duration,
+                    'quality': data.get('quality', 'good')
+                }
+            }), 200
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error updating sleep record: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/api/sleep/<int:record_id>', methods=['DELETE'])
+    @token_required
+    def delete_sleep_record(current_user, record_id):
+        sleep_record = Sleep.query.filter_by(id=record_id, user_id=current_user.id).first()
+        
+        if not sleep_record:
+            return jsonify({'error': 'Sleep record not found'}), 404
+            
+        try:
+            db.session.delete(sleep_record)
+            db.session.commit()
+            return jsonify({'message': 'Sleep record deleted successfully'}), 200
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error deleting sleep record: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
