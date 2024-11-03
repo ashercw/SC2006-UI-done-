@@ -25,7 +25,7 @@ class User(db.Model):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password, method='scrypt')
         self.date_of_birth = date_of_birth
         self.weight = weight
         self.height = height

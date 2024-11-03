@@ -3,10 +3,22 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
 from datetime import timedelta
+import atexit
 
 db = SQLAlchemy()
+_app = None  # Global app instance
+
+def get_app():
+    global _app
+    if _app is not None:
+        return _app
+    return create_app()
 
 def create_app():
+    global _app
+    if _app is not None:
+        return _app
+
     app = Flask(__name__)
     CORS(app)
 
@@ -28,5 +40,14 @@ def create_app():
         
         # Create database tables
         db.create_all()
+
+    _app = app
+    
+    # Register cleanup
+    def cleanup():
+        global _app
+        if _app is not None:
+            _app = None
+    atexit.register(cleanup)
 
     return app
