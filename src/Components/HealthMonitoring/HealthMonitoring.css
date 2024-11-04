@@ -4,241 +4,74 @@
   margin: 0 auto;
 }
 
-.health-monitoring {
-  background-color: #fff;
+/* ... (keep existing styles until sleep graph section) ... */
+
+/* Sleep Graph Styles */
+.sleep-graph-container {
+  background-color: #0a192f;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-.sleep-tracking {
-  margin-bottom: 30px;
+.sleep-graph-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  color: #fff;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
+.nav-button {
+  background-color: transparent;
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
+  padding: 8px 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+.nav-button:hover {
+  background-color: rgba(0, 229, 255, 0.1);
 }
 
-button:disabled {
-  background-color: #ccc;
+.nav-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.error-message {
-  color: #dc3545;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #dc3545;
-  border-radius: 4px;
-  background-color: #f8d7da;
+.current-date {
+  color: #00e5ff;
+  font-size: 1.1em;
 }
 
-.sleep-duration-result {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 4px;
-  background-color: #f8f9fa;
-}
-
-.duration-warning {
-  color: #dc3545;
-}
-
-.duration-good {
-  color: #28a745;
-}
-
-/* Sleep History Styles */
-.sleep-history {
-  margin-top: 30px;
-}
-
-.history-table {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-}
-
-th, td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-}
-
-/* Progress Visualization Styles */
-.progress-visualization {
-  margin-top: 30px;
-}
-
-.progress-container {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-}
-
-.progress-graph {
-  display: flex;
-  align-items: flex-end;
-  height: 200px;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 30px;
-  border-bottom: 2px solid #ddd;
+.sleep-graph {
+  height: 400px;
   position: relative;
+  margin: 20px 0;
 }
 
-.graph-bar-container {
-  flex: 1;
+.sleep-info {
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  height: 100%;
-  position: relative;
-}
-
-.graph-bar {
-  width: 30px;
-  background-color: #4CAF50;
-  transition: height 0.3s ease;
-  position: relative;
-  cursor: pointer;
-}
-
-.graph-bar:hover .graph-tooltip {
-  display: block;
-}
-
-.graph-tooltip {
-  display: none;
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  z-index: 1000;
-}
-
-.graph-tooltip p {
-  margin: 4px 0;
-}
-
-.graph-date {
-  position: absolute;
-  bottom: -25px;
-  font-size: 12px;
-  transform: rotate(-45deg);
-  white-space: nowrap;
-}
-
-.graph-legend {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  color: #fff;
   margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.legend-item {
+.sleep-time,
+.wake-time,
+.sleep-quality {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.legend-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
+.sleep-icon {
+  font-size: 20px;
 }
 
-/* Posture Upload Styles */
-.posture-upload {
-  margin-top: 30px;
-}
-
-.upload-container {
-  margin-top: 15px;
-  text-align: center;
-}
-
-.upload-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.upload-button:hover {
-  background-color: #0056b3;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.image-preview {
-  margin-top: 20px;
-}
-
-.image-preview img {
-  max-width: 100%;
-  max-height: 300px;
-  border-radius: 4px;
-}
-
-/* Goal Setting Styles */
-.goal-setting {
-  margin-top: 30px;
-}
-
-.no-data-message {
-  text-align: center;
-  color: #6c757d;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 4px;
-  margin-top: 15px;
-}
+/* ... (keep rest of existing styles) ... */

@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
 import './HealthMonitoring.css';
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const HealthMonitoring = () => {
   const [sleepData, setSleepData] = useState({
@@ -15,6 +36,7 @@ const HealthMonitoring = () => {
   const [currentDuration, setCurrentDuration] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentDayIndex, setCurrentDayIndex] = useState(0);
 
   const [goals, setGoals] = useState({
     sleepGoal: '',
@@ -23,18 +45,6 @@ const HealthMonitoring = () => {
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
-
-  useEffect(() => {
-    fetchSleepHistory();
-  }, []);
-
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
-  };
 
   const fetchSleepHistory = async () => {
     try {
@@ -60,6 +70,19 @@ const HealthMonitoring = () => {
     }
   };
 
+  useEffect(() => {
+    fetchSleepHistory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
   const calculateDuration = (sleepTime, wakeTime) => {
     const sleep = new Date(`2000/01/01 ${sleepTime}`);
     let wake = new Date(`2000/01/01 ${wakeTime}`);
@@ -70,11 +93,6 @@ const HealthMonitoring = () => {
     
     const diff = (wake - sleep) / (1000 * 60 * 60);
     return Math.round(diff * 10) / 10;
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
   const handleSleepSubmit = async (e) => {
@@ -104,11 +122,7 @@ const HealthMonitoring = () => {
       }
 
       const result = await response.json();
-      
-      // Add the new record to the sleep history
       setSleepHistory(prevHistory => [result.sleep_record, ...prevHistory]);
-
-      // Clear the form
       setSleepData({
         sleepTime: '',
         wakeTime: '',
@@ -116,7 +130,6 @@ const HealthMonitoring = () => {
         date: new Date().toISOString().split('T')[0]
       });
 
-      // Refresh the sleep history
       await fetchSleepHistory();
     } catch (error) {
       console.error('Error saving sleep data:', error);
@@ -126,13 +139,173 @@ const HealthMonitoring = () => {
     }
   };
 
+  const generateSleepGraph = () => {
+    if (!sleepHistory.length) return null;
+
+    const currentRecord = sleepHistory[currentDayIndex];
+    const [sleepHour, sleepMin] = currentRecord.bed_time.split(':').map(Number);
+    const [wakeHour, wakeMin] = currentRecord.wake_time.split(':').map(Number);
+
+    // Convert to decimal hours
+    const sleepTime = sleepHour + (sleepMin / 60);
+    const wakeTime = wakeHour + (wakeMin / 60);
+
+    // Calculate duration and data points
+    let duration;
+    if (wakeTime > sleepTime) {
+      duration = wakeTime - sleepTime;
+    } else {
+      duration = (24 - sleepTime) + wakeTime;
+    }
+
+    // Generate data points every 15 minutes
+    const points = Math.ceil(duration * 4); // 4 points per hour
+    const labels = [];
+    const data = [];
+
+    for (let i = 0; i <= points; i++) {
+      const timeOffset = (i / 4); // Convert to hours
+      let currentTime = sleepTime + timeOffset;
+      if (currentTime >= 24) {
+        currentTime -= 24;
+      }
+
+      // Format time for label
+      const hour = Math.floor(currentTime);
+      const minute = Math.floor((currentTime % 1) * 60);
+      labels.push(`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`);
+
+      // Calculate sleep stage based on time into sleep
+      const cycleTime = (timeOffset * 60) % 90; // 90-minute sleep cycle
+      let stage;
+      if (cycleTime < 10) {
+        stage = 1; // Light Sleep
+      } else if (cycleTime < 30) {
+        stage = 2; // Deep Sleep
+      } else if (cycleTime < 60) {
+        stage = 3; // Deeper Sleep
+      } else {
+        stage = 4; // REM Sleep
+      }
+      data.push(stage);
+    }
+
+    const chartData = {
+      labels,
+      datasets: [{
+        label: 'Sleep Stages',
+        data: data,
+        borderColor: '#00e5ff',
+        backgroundColor: 'rgba(0, 229, 255, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+      }]
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: 0,
+          max: 4,
+          ticks: {
+            callback: (value) => {
+              const stages = ['', 'Light Sleep', 'Deep Sleep', 'Deeper Sleep', 'REM Sleep'];
+              return stages[value];
+            },
+            color: '#fff'
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          }
+        },
+        x: {
+          ticks: {
+            color: '#fff',
+            maxRotation: 45,
+            minRotation: 45,
+            callback: (_, index) => {
+              return index % 4 === 0 ? labels[index] : '';
+            }
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const stages = ['', 'Light Sleep', 'Deep Sleep', 'Deeper Sleep', 'REM Sleep'];
+              return stages[context.raw];
+            }
+          }
+        }
+      }
+    };
+
+    return (
+      <div className="sleep-graph-container">
+        <div className="sleep-graph-nav">
+          <button 
+            className="nav-button"
+            onClick={() => setCurrentDayIndex(prev => Math.min(prev + 1, sleepHistory.length - 1))}
+            disabled={currentDayIndex >= sleepHistory.length - 1}
+          >
+            ← Previous Day
+          </button>
+          <span className="current-date">
+            {new Date(currentRecord.date).toLocaleDateString('en-US', {
+              weekday: 'long',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </span>
+          <button 
+            className="nav-button"
+            onClick={() => setCurrentDayIndex(prev => Math.max(prev - 1, 0))}
+            disabled={currentDayIndex <= 0}
+          >
+            Next Day →
+          </button>
+        </div>
+
+        <div className="sleep-graph">
+          <Line data={chartData} options={options} />
+        </div>
+
+        <div className="sleep-info">
+          <div className="sleep-time">
+            <span className="sleep-icon">😴</span>
+            <span>Sleep: {currentRecord.bed_time}</span>
+          </div>
+          <div className="wake-time">
+            <span className="sleep-icon">⏰</span>
+            <span>Wake: {currentRecord.wake_time}</span>
+          </div>
+          <div className="sleep-quality">
+            Quality: {currentRecord.quality}
+          </div>
+          <div className="duration">
+            Duration: {currentRecord.duration} hours
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="health-monitoring-container">
       <main className="main-content">
         <div className="health-monitoring">
           <h2>Health Monitoring</h2>
           
-          {/* Sleep Tracking Form */}
           <section className="sleep-tracking">
             <h3>Sleep Tracking</h3>
             <form onSubmit={handleSleepSubmit}>
@@ -198,7 +371,6 @@ const HealthMonitoring = () => {
             )}
           </section>
 
-          {/* Sleep History */}
           <section className="sleep-history">
             <h3>Sleep History</h3>
             <div className="history-table">
@@ -233,50 +405,17 @@ const HealthMonitoring = () => {
             </div>
           </section>
 
-          {/* Progress Visualization */}
           <section className="progress-visualization">
             <h3>Sleep Progress</h3>
-            <div className="progress-container">
-              {loading ? (
-                <p>Loading sleep progress...</p>
-              ) : sleepHistory.length > 0 ? (
-                <>
-                  <div className="progress-graph">
-                    {sleepHistory.slice(0, 7).reverse().map((record, index) => (
-                      <div key={index} className="graph-bar-container">
-                        <div 
-                          className="graph-bar"
-                          style={{
-                            height: `${(record.duration / 12) * 100}%`,
-                            backgroundColor: record.duration >= 7 ? '#4CAF50' : '#FF9800'
-                          }}
-                        >
-                          <div className="graph-tooltip">
-                            <p>Date: {new Date(record.date).toLocaleDateString()}</p>
-                            <p>Sleep: {record.bed_time}</p>
-                            <p>Wake: {record.wake_time}</p>
-                            <p>Duration: {record.duration}h</p>
-                          </div>
-                        </div>
-                        <div className="graph-date">{formatDate(record.date)}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="graph-legend">
-                    <div className="legend-item">
-                      <span className="legend-color" style={{backgroundColor: '#4CAF50'}}></span>
-                      <span>7+ hours (Recommended)</span>
-                    </div>
-                    <div className="legend-item">
-                      <span className="legend-color" style={{backgroundColor: '#FF9800'}}></span>
-                      <span>Less than 7 hours</span>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <p className="no-data-message">No sleep data available yet. Your sleep progress will be shown here once you start tracking.</p>
-              )}
-            </div>
+            {loading ? (
+              <p>Loading sleep progress...</p>
+            ) : sleepHistory.length > 0 ? (
+              generateSleepGraph()
+            ) : (
+              <p className="no-data-message">
+                No sleep data available yet. Your sleep progress will be shown here once you start tracking.
+              </p>
+            )}
           </section>
 
           <section className="posture-upload">
