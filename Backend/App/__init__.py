@@ -20,7 +20,7 @@ def create_app():
         return _app
 
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # Configuration
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
@@ -28,15 +28,20 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'your-jwt-secret-key')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
     db.init_app(app)
 
     with app.app_context():
         # Import routes
         from .routes import init_auth_routes
+        from PostureCorrector.posture import posture_blueprint
         
         # Initialize routes
         init_auth_routes(app)
+        
+        # Register the posture blueprint
+        app.register_blueprint(posture_blueprint, url_prefix='/api')
         
         # Create database tables
         db.create_all()
