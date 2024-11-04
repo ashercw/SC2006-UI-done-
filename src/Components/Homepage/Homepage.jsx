@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import './Homepage.css';
 
 const Homepage = () => {
-  // Mock data for demonstration
   const userProgress = {
     workoutsCompleted: 12,
     caloriesBurned: 1500,
@@ -13,12 +12,20 @@ const Homepage = () => {
 
   return (
     <div className="homepage-container">
+      {/* Background Effect */}
+      <div className="background">
+        {[...Array(20)].map((_, index) => (
+          <span key={index} className={`circle-${index}`}></span>
+        ))}
+      </div>
+
       {/* Main Content */}
       <main className="main-content">
-        <header className="dashboard-header">
+        {/* Welcome Message Backdrop */}
+        <div className="welcome-backdrop">
           <h1>Welcome back, User!</h1>
           <p>Here's your fitness journey at a glance</p>
-        </header>
+        </div>
 
         {/* Progress Cards */}
         <div className="progress-cards">

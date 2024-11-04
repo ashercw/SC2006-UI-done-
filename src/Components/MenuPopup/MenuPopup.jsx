@@ -32,6 +32,16 @@ const MenuPopup = () => {
       path: '/progress',
       name: 'Progress',
       image: 'https://img.freepik.com/free-vector/leadership-teamwork-concept_74855-14094.jpg'
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      image: 'https://miro.medium.com/v2/resize:fit:1400/1*wu3FKUzPxQhjf4Wk_uCJIw.png'
+    },
+    {
+    path: '/login',
+    name: 'Logout',
+    image: 'https://static.vecteezy.com/system/resources/previews/010/925/681/non_2x/enter-login-and-password-registration-page-on-screen-sign-in-to-your-account-creative-metaphor-login-page-mobile-app-with-user-page-identification-in-internet-vector.jpg'
     }
   ];
 
@@ -81,4 +91,3 @@ const MenuPopup = () => {
 };
 
 export default MenuPopup;
-
