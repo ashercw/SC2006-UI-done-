@@ -1,76 +1,86 @@
 .health-monitoring-container {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 2rem;
-}
-
-.main-content {
-  width: 100%;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.health-monitoring h2 {
-  color: #333;
-  margin-bottom: 2rem;
+.health-monitoring {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Styles */
+.sleep-tracking {
+  margin-bottom: 30px;
+}
+
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #333;
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 1rem;
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #007bff;
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }
 
 button:disabled {
-  background-color: #cccccc;
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* Section Styles */
-section {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+.error-message {
+  color: #dc3545;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  background-color: #f8d7da;
 }
 
-section h3 {
-  color: #333;
-  margin-bottom: 1.5rem;
+.sleep-duration-result {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
 }
 
-/* Sleep History Table */
+.duration-warning {
+  color: #dc3545;
+}
+
+.duration-good {
+  color: #28a745;
+}
+
+/* Sleep History Styles */
+.sleep-history {
+  margin-top: 30px;
+}
+
 .history-table {
   overflow-x: auto;
 }
@@ -78,31 +88,41 @@ section h3 {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: 15px;
 }
 
 th, td {
-  padding: 0.75rem;
+  padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
 th {
-  background-color: #f5f5f5;
-  font-weight: bold;
+  background-color: #f8f9fa;
+  font-weight: 600;
 }
 
-/* Progress Graph */
+/* Progress Visualization Styles */
+.progress-visualization {
+  margin-top: 30px;
+}
+
 .progress-container {
-  margin-top: 1rem;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
 }
 
 .progress-graph {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
   height: 200px;
-  padding: 1rem 0;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #ddd;
+  position: relative;
 }
 
 .graph-bar-container {
@@ -110,14 +130,20 @@ th {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 0.5rem;
+  height: 100%;
+  position: relative;
 }
 
 .graph-bar {
-  width: 40px;
-  background: #4CAF50;
-  border-radius: 4px;
+  width: 30px;
+  background-color: #4CAF50;
+  transition: height 0.3s ease;
   position: relative;
+  cursor: pointer;
+}
+
+.graph-bar:hover .graph-tooltip {
+  display: block;
 }
 
 .graph-tooltip {
@@ -126,36 +152,38 @@ th {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 0.5rem;
+  padding: 8px;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: 12px;
   white-space: nowrap;
+  z-index: 1000;
 }
 
-.graph-bar:hover .graph-tooltip {
-  display: block;
+.graph-tooltip p {
+  margin: 4px 0;
 }
 
 .graph-date {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: #666;
+  position: absolute;
+  bottom: -25px;
+  font-size: 12px;
+  transform: rotate(-45deg);
+  white-space: nowrap;
 }
 
-/* Legend */
 .graph-legend {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-top: 1rem;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .legend-color {
@@ -164,23 +192,27 @@ th {
   border-radius: 4px;
 }
 
-/* Upload Section */
+/* Posture Upload Styles */
+.posture-upload {
+  margin-top: 30px;
+}
+
 .upload-container {
+  margin-top: 15px;
   text-align: center;
 }
 
 .upload-button {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #4CAF50;
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
   border-radius: 4px;
   cursor: pointer;
-  margin: 1rem 0;
 }
 
 .upload-button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }
 
 input[type="file"] {
@@ -188,7 +220,7 @@ input[type="file"] {
 }
 
 .image-preview {
-  margin-top: 1rem;
+  margin-top: 20px;
 }
 
 .image-preview img {
@@ -197,32 +229,16 @@ input[type="file"] {
   border-radius: 4px;
 }
 
-/* Messages */
-.error-message {
-  color: #d32f2f;
-  background-color: #ffebee;
-  padding: 1rem;
-  border-radius: 4px;
-  margin: 1rem 0;
+/* Goal Setting Styles */
+.goal-setting {
+  margin-top: 30px;
 }
 
 .no-data-message {
-  color: #666;
   text-align: center;
-  padding: 2rem;
-}
-
-.sleep-duration-result {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #f5f5f5;
+  color: #6c757d;
+  padding: 20px;
+  background-color: #f8f9fa;
   border-radius: 4px;
-}
-
-.duration-warning {
-  color: #f57c00;
-}
-
-.duration-good {
-  color: #4CAF50;
+  margin-top: 15px;
 }

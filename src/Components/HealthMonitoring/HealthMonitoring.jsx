@@ -28,11 +28,21 @@ const HealthMonitoring = () => {
     fetchSleepHistory();
   }, []);
 
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
   const fetchSleepHistory = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('/api/sleep');
+      const response = await fetch('/api/sleep', {
+        headers: getAuthHeaders()
+      });
       if (response.ok) {
         const data = await response.json();
         const sortedRecords = (data.sleep_records || []).sort((a, b) => 
@@ -79,9 +89,7 @@ const HealthMonitoring = () => {
 
       const response = await fetch('/api/sleep', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           date: sleepData.date,
           sleepTime: sleepData.sleepTime,
@@ -90,26 +98,26 @@ const HealthMonitoring = () => {
         })
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        
-        // Add the new record to the sleep history
-        setSleepHistory(prevHistory => [result.sleep_record, ...prevHistory]);
-
-        // Clear the form
-        setSleepData({
-          sleepTime: '',
-          wakeTime: '',
-          quality: 'good',
-          date: new Date().toISOString().split('T')[0]
-        });
-
-        // Refresh the sleep history
-        await fetchSleepHistory();
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save sleep record');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
       }
+
+      const result = await response.json();
+      
+      // Add the new record to the sleep history
+      setSleepHistory(prevHistory => [result.sleep_record, ...prevHistory]);
+
+      // Clear the form
+      setSleepData({
+        sleepTime: '',
+        wakeTime: '',
+        quality: 'good',
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      // Refresh the sleep history
+      await fetchSleepHistory();
     } catch (error) {
       console.error('Error saving sleep data:', error);
       setError(error.message);
@@ -234,7 +242,7 @@ const HealthMonitoring = () => {
               ) : sleepHistory.length > 0 ? (
                 <>
                   <div className="progress-graph">
-                    {sleepHistory.slice(0, 7).map((record, index) => (
+                    {sleepHistory.slice(0, 7).reverse().map((record, index) => (
                       <div key={index} className="graph-bar-container">
                         <div 
                           className="graph-bar"
