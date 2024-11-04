@@ -11,27 +11,27 @@ const MenuPopup = () => {
     { 
       path: '/homepage',
       name: 'Homepage',
-      image: 'https://img.freepik.com/free-vector/gradient-fitness-facebook-cover_23-2149202808.jpg'
+      image: 'https://img.freepik.com/premium-vector/world-health-day-hand-drawn-set_98292-30408.jpg'
     },
     { 
       path: '/meal-tracker',
       name: 'Meal Tracker',
-      image: 'https://img.freepik.com/free-photo/healthy-food-table_23-2148095326.jpg'
+      image: 'https://img.freepik.com/premium-vector/three-plates-food-with-glass-juice_850687-823.jpg'
     },
     { 
       path: '/workout-manager',
       name: 'Workout',
-      image: 'https://img.freepik.com/free-photo/woman-doing-fitness-training_23-2149056922.jpg'
+      image: 'https://img.freepik.com/free-vector/gym-concept-illustration_114360-6550.jpg'
     },
     { 
       path: '/health-monitoring',
       name: 'Health',
-      image: 'https://img.freepik.com/free-photo/medical-banner-with-heart-rate-line_23-2149611215.jpg'
+      image: 'https://img.freepik.com/free-vector/illustration-pulse-rate_53876-5594.jpg'
     },
     { 
       path: '/progress',
       name: 'Progress',
-      image: 'https://img.freepik.com/free-vector/gradient-stock-market-concept_23-2149166910.jpg'
+      image: 'https://img.freepik.com/free-vector/leadership-teamwork-concept_74855-14094.jpg'
     }
   ];
 
