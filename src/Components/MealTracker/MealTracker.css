@@ -2,6 +2,7 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
+    background: rgb(185, 210, 191);
     font-family: Arial, sans-serif;
 }
 
@@ -12,7 +13,7 @@
 }
 
 .meal-form-container {
-    background-color: #f5f5f5;
+    background-color: #f8f8f8;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 30px;
