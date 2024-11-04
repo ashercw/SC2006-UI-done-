@@ -36,7 +36,7 @@ const MenuPopup = () => {
     { 
       path: '/posture-correction',  // New route added here
       name: 'Posture Correction',
-      image: 'https://img.freepik.com/free-vector/yoga-pose-concept-illustration_114360-1245.jpg'
+      image: 'https://img.freepik.com/premium-vector/set-young-woman-posture-problems_140689-8026.jpg'
     },
     {
       path: '/settings',

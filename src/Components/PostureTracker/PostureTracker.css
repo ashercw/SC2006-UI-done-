@@ -2,6 +2,7 @@
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
+  background-color: #8dcb91b7;
   text-align: center;
 }
 
@@ -23,13 +24,13 @@
 }
 
 .controls button:not(.disabled) {
-  background-color: #4CAF50;
+  background-color: #28962cd5;
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .controls button:not(.disabled):hover {
-  background-color: #45a049;
+  background-color: #1c5e1f;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
