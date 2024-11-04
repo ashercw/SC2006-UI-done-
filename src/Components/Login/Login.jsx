@@ -82,7 +82,7 @@ const Login = () => {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     showSuccess('Login successful!');
-                    navigate('/homepage');
+                    navigate('/Homepage');
                 }
             } catch (error) {
                 showError(error.message || 'An error occurred. Please try again.');

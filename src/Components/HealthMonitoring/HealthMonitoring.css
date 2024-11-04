@@ -6,6 +6,22 @@
   background: rgb(185, 210, 191);
 }
 
+.form-group {
+  margin-bottom: 20px; /* Adjust this value as needed */
+}
+
+label {
+  text-align: left;
+  display: block; /* Make labels block elements for better spacing */
+  margin-bottom: 5px; /* Space between label and input */
+}
+
+input, select {
+  width: 95%; /* Optional: Make inputs full width */
+  padding: 8px; /* Optional: Add padding for better aesthetics */
+}
+
+
 /* ... (keep existing styles until sleep graph section) ... */
 
 /* Sleep Graph Styles */
@@ -227,29 +243,6 @@ th {
   position: absolute;
   font-size: 20px;
   transform: translate(-50%, -50%);
-}
-
-/* Posture Upload Styles */
-.posture-upload {
-  margin-top: 30px;
-}
-
-.upload-container {
-  margin-top: 15px;
-  text-align: center;
-}
-
-.upload-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.upload-button:hover {
-  background-color: #0056b3;
 }
 
 input[type="file"] {

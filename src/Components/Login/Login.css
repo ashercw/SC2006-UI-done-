@@ -8,7 +8,7 @@
     width: 600px;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+} 
 
 .header {
     display: flex;
@@ -100,6 +100,10 @@
     gap: 30px;
     margin: 40px auto;
 }
+
+.submit-container button {
+    margin-left: 7%; /* Move buttons to the right by 5% */
+  }
 
 .submit {
     display: flex;
