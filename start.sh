@@ -11,6 +11,9 @@ python3 run.py&
 cd foodtracker
 python3 app.py&
 
+cd posturetracker
+python3 ___init___.py&
+
 cd ..
 cd ..
 npm start 
