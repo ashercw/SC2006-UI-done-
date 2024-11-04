@@ -7,13 +7,20 @@ from functools import wraps
 from flask import current_app
 from werkzeug.security import generate_password_hash
 import os
-import traceback
 
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        # Temporarily bypass authentication for testing
-        return f(None, *args, **kwargs)
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 401
+        try:
+            token = token.split(' ')[1]  # Remove 'Bearer ' prefix
+            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
+            current_user = User.query.filter_by(id=data['user_id']).first()
+        except:
+            return jsonify({'message': 'Token is invalid'}), 401
+        return f(current_user, *args, **kwargs)
     return decorated
 
 def init_auth_routes(app):
@@ -50,8 +57,15 @@ def init_auth_routes(app):
             db.session.add(new_user)
             db.session.commit()
 
+            # Generate token
+            token = jwt.encode({
+                'user_id': new_user.id,
+                'exp': datetime.utcnow() + timedelta(days=1)
+            }, current_app.config['SECRET_KEY'])
+
             return jsonify({
                 'message': 'Registration successful',
+                'token': token,
                 'user': {
                     'id': new_user.id,
                     'email': new_user.email,
@@ -64,22 +78,85 @@ def init_auth_routes(app):
             db.session.rollback()
             return jsonify({'error': str(e)}), 400
 
+    @app.route('/api/auth/login', methods=['POST'])
+    def login():
+        data = request.get_json()
+        
+        if not data or not data.get('email') or not data.get('password'):
+            return jsonify({'error': 'Email and password are required'}), 400
+
+        user = User.query.filter_by(email=data['email']).first()
+
+        if not user or not user.verifyPassword(data['password']):
+            return jsonify({'error': 'Invalid email or password'}), 401
+
+        token = jwt.encode({
+            'user_id': user.id,
+            'exp': datetime.utcnow() + timedelta(days=1)
+        }, current_app.config['SECRET_KEY'])
+
+        return jsonify({
+            'message': 'Login successful',
+            'token': token,
+            'user': {
+                'id': user.id,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name
+            }
+        }), 200
+
+    @app.route('/api/auth/reset-password', methods=['POST'])
+    def reset_password():
+        data = request.get_json()
+        
+        if not data or not data.get('email'):
+            return jsonify({'error': 'Email is required'}), 400
+
+        user = User.query.filter_by(email=data['email']).first()
+        
+        if not user:
+            # For security reasons, don't reveal if email exists
+            return jsonify({'message': 'If the email exists, a reset link will be sent'}), 200
+
+        # In a real application, you would:
+        # 1. Generate a reset token
+        # 2. Save it to the database with an expiration
+        # 3. Send an email with the reset link
+        # For now, we'll just return a success message
+        
+        return jsonify({
+            'message': 'If the email exists, a reset link will be sent'
+        }), 200
+
+    @app.route('/api/auth/verify-token', methods=['GET'])
+    @token_required
+    def verify_token(current_user):
+        return jsonify({
+            'message': 'Token is valid',
+            'user': {
+                'id': current_user.id,
+                'email': current_user.email,
+                'first_name': current_user.first_name,
+                'last_name': current_user.last_name
+            }
+        }), 200
+
+    # Sleep tracking routes
     @app.route('/api/sleep', methods=['POST'])
-    def add_sleep_record():
+    @token_required
+    def add_sleep_record(current_user):
         try:
             data = request.get_json()
-            print("Received data:", data)  # Debug print
             
             # Convert string times to Time objects
             date = datetime.strptime(data['date'], '%Y-%m-%d').date()
             bed_time = datetime.strptime(data['sleepTime'], '%H:%M').time()
             wake_time = datetime.strptime(data['wakeTime'], '%H:%M').time()
             
-            print(f"Parsed values - date: {date}, bed_time: {bed_time}, wake_time: {wake_time}")  # Debug print
-            
             # Create new sleep record
             sleep_record = Sleep(
-                user_id=1,  # Hardcoded for testing
+                user_id=current_user.id,
                 date=date,
                 bed_time=bed_time,
                 wake_time=wake_time
@@ -88,8 +165,6 @@ def init_auth_routes(app):
             # Add and commit to database
             db.session.add(sleep_record)
             db.session.commit()
-            
-            print("Sleep record added successfully")  # Debug print
             
             return jsonify({
                 'message': 'Sleep record added successfully',
@@ -105,15 +180,28 @@ def init_auth_routes(app):
             
         except Exception as e:
             db.session.rollback()
-            print(f"Error adding sleep record: {str(e)}")
-            print("Traceback:", traceback.format_exc())  # Print full traceback
+            print(f"Error adding sleep record: {str(e)}")  # Add debug print
             return jsonify({'error': str(e)}), 400
 
     @app.route('/api/sleep', methods=['GET'])
-    def get_sleep_records():
+    @token_required
+    def get_sleep_records(current_user):
         try:
-            sleep_records = Sleep.query.filter_by(user_id=1).order_by(Sleep.date.desc()).all()
-            print(f"Found {len(sleep_records)} sleep records")  # Debug print
+            # Get date range from query parameters
+            start_date = request.args.get('start_date')
+            end_date = request.args.get('end_date')
+            
+            query = Sleep.query.filter_by(user_id=current_user.id)
+            
+            if start_date:
+                start = datetime.strptime(start_date, '%Y-%m-%d').date()
+                query = query.filter(Sleep.date >= start)
+            
+            if end_date:
+                end = datetime.strptime(end_date, '%Y-%m-%d').date()
+                query = query.filter(Sleep.date <= end)
+            
+            sleep_records = query.order_by(Sleep.date.desc()).all()
             
             return jsonify({
                 'sleep_records': [{
@@ -127,8 +215,61 @@ def init_auth_routes(app):
             }), 200
             
         except Exception as e:
-            print(f"Error getting sleep records: {str(e)}")
-            print("Traceback:", traceback.format_exc())  # Print full traceback
+            print(f"Error getting sleep records: {str(e)}")  # Add debug print
             return jsonify({'error': str(e)}), 400
 
-    return app
+    @app.route('/api/sleep/<int:record_id>', methods=['PUT'])
+    @token_required
+    def update_sleep_record(current_user, record_id):
+        sleep_record = Sleep.query.filter_by(id=record_id, user_id=current_user.id).first()
+        
+        if not sleep_record:
+            return jsonify({'error': 'Sleep record not found'}), 404
+            
+        try:
+            data = request.get_json()
+            
+            if 'date' in data:
+                sleep_record.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+            if 'sleepTime' in data:
+                sleep_record.bed_time = datetime.strptime(data['sleepTime'], '%H:%M').time()
+            if 'wakeTime' in data:
+                sleep_record.wake_time = datetime.strptime(data['wakeTime'], '%H:%M').time()
+            
+            sleep_record.sleep_duration = sleep_record.get_sleep_duration()
+            db.session.commit()
+            
+            return jsonify({
+                'message': 'Sleep record updated successfully',
+                'sleep_record': {
+                    'id': sleep_record.id,
+                    'date': sleep_record.date.strftime('%Y-%m-%d'),
+                    'bed_time': sleep_record.bed_time.strftime('%H:%M'),
+                    'wake_time': sleep_record.wake_time.strftime('%H:%M'),
+                    'duration': sleep_record.sleep_duration,
+                    'quality': data.get('quality', 'good')
+                }
+            }), 200
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error updating sleep record: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/api/sleep/<int:record_id>', methods=['DELETE'])
+    @token_required
+    def delete_sleep_record(current_user, record_id):
+        sleep_record = Sleep.query.filter_by(id=record_id, user_id=current_user.id).first()
+        
+        if not sleep_record:
+            return jsonify({'error': 'Sleep record not found'}), 404
+            
+        try:
+            db.session.delete(sleep_record)
+            db.session.commit()
+            return jsonify({'message': 'Sleep record deleted successfully'}), 200
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error deleting sleep record: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
