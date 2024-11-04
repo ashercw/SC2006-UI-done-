@@ -16,6 +16,7 @@ import Progress from './Components/Progress/Progress';
 import Settings from './Components/Settings/Settings';
 import HealthMonitoring from './Components/HealthMonitoring/HealthMonitoring';
 import MenuPopup from './Components/MenuPopup/MenuPopup';
+import PostureTracker from './Components/PostureTracker/PostureTracker'; // Import the Posture Correction component
 import { useLocation } from 'react-router-dom';
 
 // Layout wrapper component that includes the MenuPopup
@@ -99,6 +100,12 @@ function App() {
               <Route path="/health-monitoring" element={
                 <PageLayout>
                   <HealthMonitoring />
+                </PageLayout>
+              } />
+              {/* New Posture Correction Route */}
+              <Route path="/posture-correction" element={
+                <PageLayout>
+                  <PostureTracker />
                 </PageLayout>
               } />
             </Routes>
