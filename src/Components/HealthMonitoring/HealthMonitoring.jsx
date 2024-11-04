@@ -304,7 +304,7 @@ const HealthMonitoring = () => {
     <div className="health-monitoring-container">
       <main className="main-content">
         <div className="health-monitoring">
-          <h2>Health Monitoring</h2>
+          <h2 align = 'center'>Health Monitoring</h2>
           
           <section className="sleep-tracking">
             <h3>Sleep Tracking</h3>
