@@ -110,7 +110,7 @@ const MealTracker = () => {
     };
 
     return (
-        <div className="meal-tracker">
+        <div className= "meal-tracker">
             <h2>Meal Tracker</h2>
             
             <div className="meal-form-container">

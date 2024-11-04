@@ -1,15 +1,9 @@
-.welcome-backdrop {
-  background-color: white; /* White background */
-  padding: 20px; /* Padding for spacing */
-  border-radius: 10px; /* Optional: rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
-  margin-bottom: 50px; /* Space below the backdrop */
-}
-
 .health-monitoring-container {
-  padding: 20px;
-  max-width: 1200px;
+  padding: 10px;
+  max-width: 1150px;
   margin: 0 auto;
+  align-items: center;
+  background: rgb(185, 210, 191);
 }
 
 /* ... (keep existing styles until sleep graph section) ... */
@@ -75,7 +69,7 @@
 .sleep-quality {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 20px;
 }
 
 .sleep-icon {
