@@ -88,13 +88,18 @@ const Homepage = () => {
 
       {/* Main Content */}
       <main className="main-content">
+
+        {/* Fitness App Logo */}
+        <div className="app-logo">
+          <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" /> 
+        </div>
+
         {/* Welcome Message Backdrop */}
         <div className="welcome-backdrop">
           <h1>Welcome back, User!</h1>
           <p>Here's your fitness journey at a glance</p>
           <button onClick={resetCounters} className="reset-button">Reset Progress</button>
         </div>
-
         {/* Progress Cards */}
         <div className="progress-cards">
           <div className="progress-card">
