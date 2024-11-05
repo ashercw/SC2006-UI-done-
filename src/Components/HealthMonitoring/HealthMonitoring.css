@@ -260,11 +260,6 @@ input[type="file"] {
   border-radius: 4px;
 }
 
-/* Goal Setting Styles */
-.goal-setting {
-  margin-top: 30px;
-}
-
 .no-data-message {
   text-align: center;
   color: #6c757d;

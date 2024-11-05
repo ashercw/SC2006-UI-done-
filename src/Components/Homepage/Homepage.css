@@ -218,7 +218,26 @@
     box-shadow: 40vmin 0 5.214262212803279vmin currentColor;
   }
 
+  .app-logo{
+    background: rgba(255, 255, 255, 0.603);
+    padding: 1.2rem;
+    width: 300px;
+    border-radius: 20px;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    margin: 0 auto
+  }
+
+  .logo {
+    width: 200px; /* Adjust the size as needed */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centers the logo */
+  }
+
   .welcome-backdrop {
+    margin-top: 2rem;
     background-color: rgba(255, 255, 255, 0.818); /* White background */
     padding: 20px; /* Padding for spacing */
     border-radius: 10px; /* Optional: rounded corners */

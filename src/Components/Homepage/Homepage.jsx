@@ -43,6 +43,12 @@ const Homepage = () => {
 
       {/* Main Content */}
       <main className="main-content">
+
+        {/* Fitness App Logo */}
+        <div className="app-logo">
+          <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" /> 
+        </div>
+
         {/* Welcome Message Backdrop */}
         <div className="welcome-backdrop">
           <h1>Welcome back, User!</h1>
@@ -74,54 +80,6 @@ const Homepage = () => {
             <p>This week</p>
           </div>
         </div>
-
-        {/* Weekly Progress */}
-        <section className="weekly-progress">
-          <h2>Weekly Progress</h2>
-          <div className="weekly-graphs">
-            {/* Workouts Graph */}
-            <div className="graph-container">
-              <h3>Workouts Completed</h3>
-              <div className="progress-graph">
-                {weeklyData.map((day, index) => (
-                  <div key={index} className="bar-wrapper">
-                    <div 
-                      className={`graph-bar ${index === weeklyData.length - 1 ? 'active' : ''}`}
-                      style={{ 
-                        height: `${(day.workouts / maxWorkouts) * 150}px`,
-                        backgroundColor: index === weeklyData.length - 1 ? '#4CAF50' : 'rgba(76, 175, 80, 0.6)'
-                      }}
-                    >
-                      <span className="bar-value">{day.workouts}</span>
-                    </div>
-                    <span className="bar-label">{day.day}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Calories Graph */}
-            <div className="graph-container">
-              <h3>Calories Burned</h3>
-              <div className="progress-graph">
-                {weeklyData.map((day, index) => (
-                  <div key={index} className="bar-wrapper">
-                    <div 
-                      className={`graph-bar ${index === weeklyData.length - 1 ? 'active' : ''}`}
-                      style={{ 
-                        height: `${(day.calories / maxCalories) * 150}px`,
-                        backgroundColor: index === weeklyData.length - 1 ? '#4CAF50' : 'rgba(76, 175, 80, 0.6)'
-                      }}
-                    >
-                      <span className="bar-value">{day.calories}</span>
-                    </div>
-                    <span className="bar-label">{day.day}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Quick Actions */}
         <section className="quick-actions">

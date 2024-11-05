@@ -38,14 +38,6 @@ const HealthMonitoring = () => {
   const [error, setError] = useState(null);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
 
-  const [goals, setGoals] = useState({
-    sleepGoal: '',
-    postureGoal: '',
-    generalGoal: ''
-  });
-
-  const [selectedImage, setSelectedImage] = useState(null);
-
   const fetchSleepHistory = async () => {
     try {
       setLoading(true);
@@ -416,40 +408,6 @@ const HealthMonitoring = () => {
                 No sleep data available yet. Your sleep progress will be shown here once you start tracking.
               </p>
             )}
-          </section>
-          
-          <section className="goal-setting">
-            <h3>Set Health Goals</h3>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              console.log('Goals submitted:', goals);
-            }}>
-              <div className="form-group">
-                <label>Daily Sleep Goal (hours):</label>
-                <input
-                  type="number"
-                  value={goals.sleepGoal}
-                  onChange={(e) => setGoals({...goals, sleepGoal: e.target.value})}
-                />
-              </div>
-              <div className="form-group">
-                <label>Posture Goal:</label>
-                <textarea
-                  value={goals.postureGoal}
-                  onChange={(e) => setGoals({...goals, postureGoal: e.target.value})}
-                  placeholder="e.g., Maintain straight back during work hours"
-                />
-              </div>
-              <div className="form-group">
-                <label>General Health Goal:</label>
-                <textarea
-                  value={goals.generalGoal}
-                  onChange={(e) => setGoals({...goals, generalGoal: e.target.value})}
-                  placeholder="e.g., Improve overall sleep quality"
-                />
-              </div>
-              <button type="submit">Set Goals</button>
-            </form>
           </section>
         </div>
       </main>
