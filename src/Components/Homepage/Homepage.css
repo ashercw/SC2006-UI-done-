@@ -27,7 +27,7 @@
     animation-iteration-count: infinite;
   }
   
-  
+  /* Background span animations remain unchanged */
   .background span:nth-child(0) {
     color: #b3cfdf;
     top: 29%;
@@ -225,6 +225,17 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
     margin-bottom: 50px; /* Space below the backdrop */
   }
+  .background span:nth-child(0) { /* ... */ }
+  /* ... rest of the background span styles ... */
+  .background span:nth-child(20) { /* ... */ }
+
+  .welcome-backdrop {
+    background-color: rgba(255, 255, 255, 0.818);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+  }
   
   .main-content {
     width: 80%;
@@ -233,7 +244,7 @@
     text-align: center;
   }
 
-.progress-cards {
+  .progress-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
@@ -259,52 +270,98 @@
     justify-content: center;
   }
 
-.progress-number {
+  .progress-number {
     font-size: 2em;
     font-weight: bold;
-}
+  }
 
-.progress-bar {
+  .progress-bar {
     background: rgba(255, 255, 255, 0.1);
     height: 10px;
     border-radius: 5px;
     margin: 15px 0;
     overflow: hidden;
-}
+  }
 
-.progress-fill {
+  .progress-fill {
     background: linear-gradient(90deg, #4CAF50, #8BC34A);
     height: 100%;
     transition: width 0.3s ease;
-}
+  }
 
-.weekly-progress {
+  .weekly-progress {
     background: rgba(255, 255, 255, 0.818);
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 2rem;
   }
-.progress-graph {
+
+  .weekly-graphs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .graph-container {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .graph-container h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .progress-graph {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     height: 200px;
     padding: 20px 0;
-}
+    margin: 0 10px;
+  }
 
-.graph-bar {
+  .bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+  }
+
+  .graph-bar {
     width: 30px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
+    background: rgba(76, 175, 80, 0.6);
+    border-radius: 15px 15px 0 0;
     transition: height 0.3s ease;
-}
+    position: relative;
+  }
 
-.graph-bar.active {
-    background: linear-gradient(180deg, #4CAF50, #8BC34A);
-}
+  .graph-bar.active {
+    background: #4CAF50;
+  }
 
-.quick-actions {
+  .bar-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .bar-label {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .quick-actions {
     background: rgba(255, 255, 255, 0.818);
     padding: 1.5rem;
     border-radius: 10px;
@@ -335,7 +392,7 @@
     background: #2a822e;
   }
 
-.reset-button {
+  .reset-button {
     background: rgba(255, 0, 0, 0.2);
     border: none;
     padding: 8px 16px;
@@ -343,8 +400,8 @@
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.3s ease;
-}
+  }
 
-.reset-button:hover {
+  .reset-button:hover {
     background: rgba(255, 0, 0, 0.3);
-}
+  }

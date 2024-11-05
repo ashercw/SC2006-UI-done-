@@ -10,12 +10,27 @@ const Homepage = () => {
     monthlyGoal: 20
   };
 
+  // Sample weekly data
+  const weeklyData = [
+    { day: 'Mon', workouts: 2, calories: 450 },
+    { day: 'Tue', workouts: 1, calories: 300 },
+    { day: 'Wed', workouts: 3, calories: 600 },
+    { day: 'Thu', workouts: 2, calories: 400 },
+    { day: 'Fri', workouts: 1, calories: 350 },
+    { day: 'Sat', workouts: 2, calories: 500 },
+    { day: 'Sun', workouts: 1, calories: 250 }
+  ];
+
   // Function to reset counters
   const resetCounters = () => {
     localStorage.setItem('workoutsCompleted', '0');
     localStorage.setItem('caloriesBurned', '0');
     window.location.reload();
   };
+
+  // Calculate max values for scaling
+  const maxWorkouts = Math.max(...weeklyData.map(d => d.workouts));
+  const maxCalories = Math.max(...weeklyData.map(d => d.calories));
 
   return (
     <div className="homepage-container">
@@ -63,14 +78,48 @@ const Homepage = () => {
         {/* Weekly Progress */}
         <section className="weekly-progress">
           <h2>Weekly Progress</h2>
-          <div className="progress-graph">
-            <div className="graph-bar" style={{height: '60%'}}></div>
-            <div className="graph-bar" style={{height: '80%'}}></div>
-            <div className="graph-bar" style={{height: '40%'}}></div>
-            <div className="graph-bar" style={{height: '90%'}}></div>
-            <div className="graph-bar" style={{height: '70%'}}></div>
-            <div className="graph-bar" style={{height: '50%'}}></div>
-            <div className="graph-bar active" style={{height: '75%'}}></div>
+          <div className="weekly-graphs">
+            {/* Workouts Graph */}
+            <div className="graph-container">
+              <h3>Workouts Completed</h3>
+              <div className="progress-graph">
+                {weeklyData.map((day, index) => (
+                  <div key={index} className="bar-wrapper">
+                    <div 
+                      className={`graph-bar ${index === weeklyData.length - 1 ? 'active' : ''}`}
+                      style={{ 
+                        height: `${(day.workouts / maxWorkouts) * 150}px`,
+                        backgroundColor: index === weeklyData.length - 1 ? '#4CAF50' : 'rgba(76, 175, 80, 0.6)'
+                      }}
+                    >
+                      <span className="bar-value">{day.workouts}</span>
+                    </div>
+                    <span className="bar-label">{day.day}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Calories Graph */}
+            <div className="graph-container">
+              <h3>Calories Burned</h3>
+              <div className="progress-graph">
+                {weeklyData.map((day, index) => (
+                  <div key={index} className="bar-wrapper">
+                    <div 
+                      className={`graph-bar ${index === weeklyData.length - 1 ? 'active' : ''}`}
+                      style={{ 
+                        height: `${(day.calories / maxCalories) * 150}px`,
+                        backgroundColor: index === weeklyData.length - 1 ? '#4CAF50' : 'rgba(76, 175, 80, 0.6)'
+                      }}
+                    >
+                      <span className="bar-value">{day.calories}</span>
+                    </div>
+                    <span className="bar-label">{day.day}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
