@@ -4,6 +4,7 @@ import './MenuPopup.css';
 
 const MenuPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false); // State to track logout
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,7 +35,7 @@ const MenuPopup = () => {
       image: 'https://img.freepik.com/free-vector/leadership-teamwork-concept_74855-14094.jpg'
     },
     { 
-      path: '/posture-correction',  // New route added here
+      path: '/posture-correction',
       name: 'Posture Correction',
       image: 'https://img.freepik.com/premium-vector/set-young-woman-posture-problems_140689-8026.jpg'
     },
@@ -63,6 +64,20 @@ const MenuPopup = () => {
     document.body.style.overflow = "";
   };
 
+  // Handle logout with a delay
+  const handleLogout = () => {
+    setIsLoggingOut(true); // Show the spinner
+
+    // Simulate delay for logout process (e.g., show loading spinner)
+    setTimeout(() => {
+      // Clear any stored user data (optional)
+      localStorage.clear();
+      // Navigate to the login page after delay
+      navigate('/login');
+      setIsLoggingOut(false); // Hide the spinner after navigating
+    }, 1500); // 1.5 second delay
+  };
+
   return (
     <>
       <button id="menu-toggle" onClick={toggleMenu}>
@@ -78,7 +93,7 @@ const MenuPopup = () => {
               <button
                 key={route.path}
                 className="menu-link"
-                onClick={() => handleNavigate(route.path)}
+                onClick={() => route.path === '/login' ? handleLogout() : handleNavigate(route.path)} // Check for logout
               >
                 <h2 className="menu-link-label">{route.name}</h2>
                 <img 
@@ -90,8 +105,16 @@ const MenuPopup = () => {
             ))}
         </div>
       </nav>
+
+      {isLoggingOut && (
+        <div className="logout-spinner-container">
+          <div className="spinner"></div>
+          <p>Logging out...</p>
+        </div>
+      )}
     </>
   );
 };
 
 export default MenuPopup;
+

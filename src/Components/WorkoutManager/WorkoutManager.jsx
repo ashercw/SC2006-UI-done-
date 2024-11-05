@@ -13,13 +13,34 @@ const WorkoutManager = () => {
     notes: ''
   });
 
-  // Mock data for weekly summary
-  const weeklySummary = {
-    totalWorkouts: 5,
-    totalDuration: '5h 30m',
-    averageIntensity: 'Medium',
-    completedGoals: '3/4'
+  // Calculate calories based on intensity and duration
+  const calculateCalories = (duration, intensity) => {
+    const caloriesPerMinute = {
+      low: 5,      // 5 calories per minute
+      medium: 7,   // 7 calories per minute
+      high: 10     // 10 calories per minute
+    };
+    return duration * caloriesPerMinute[intensity];
   };
+
+  // Get weekly summary
+  const getWeeklySummary = () => {
+    const totalWorkouts = workouts.length;
+    const totalDuration = workouts.reduce((acc, curr) => acc + parseInt(curr.duration), 0);
+    const totalCalories = workouts.reduce((acc, curr) => 
+      acc + calculateCalories(parseInt(curr.duration), curr.intensity), 0
+    );
+    
+    return {
+      totalWorkouts,
+      totalDuration: `${Math.floor(totalDuration/60)}h ${totalDuration%60}m`,
+      averageIntensity: 'Medium',
+      completedGoals: '3/4',
+      totalCalories
+    };
+  };
+
+  const weeklySummary = getWeeklySummary();
 
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
@@ -41,6 +62,16 @@ const WorkoutManager = () => {
       id: Date.now()
     };
     setWorkouts(prev => [...prev, newWorkout]);
+
+    // Increment workouts completed counter
+    const currentCount = parseInt(localStorage.getItem('workoutsCompleted') || '0');
+    localStorage.setItem('workoutsCompleted', currentCount + 1);
+
+    // Update calories burned
+    const calories = calculateCalories(parseInt(workoutForm.duration), workoutForm.intensity);
+    const currentCalories = parseInt(localStorage.getItem('caloriesBurned') || '0');
+    localStorage.setItem('caloriesBurned', currentCalories + calories);
+    
     setWorkoutForm({
       type: '',
       duration: '',
@@ -141,8 +172,8 @@ const WorkoutManager = () => {
               <p>{weeklySummary.averageIntensity}</p>
             </div>
             <div className="summary-item">
-              <h3>Goals Completed</h3>
-              <p>{weeklySummary.completedGoals}</p>
+              <h3>Calories Burned</h3>
+              <p>{weeklySummary.totalCalories}</p>
             </div>
           </div>
         </div>
@@ -159,6 +190,7 @@ const WorkoutManager = () => {
                   <p>Date: {formatDate(workout.date)}</p>
                   <p>Duration: {workout.duration} minutes</p>
                   <p>Intensity: {workout.intensity}</p>
+                  <p>Calories: {calculateCalories(parseInt(workout.duration), workout.intensity)}</p>
                   {workout.notes && <p>Notes: {workout.notes}</p>}
                 </div>
               ))}

@@ -4,10 +4,17 @@ import './Homepage.css';
 
 const Homepage = () => {
   const userProgress = {
-    workoutsCompleted: 12,
-    caloriesBurned: 1500,
+    workoutsCompleted: parseInt(localStorage.getItem('workoutsCompleted') || '0'),
+    caloriesBurned: parseInt(localStorage.getItem('caloriesBurned') || '0'),
     weeklyGoal: 5,
     monthlyGoal: 20
+  };
+
+  // Function to reset counters
+  const resetCounters = () => {
+    localStorage.setItem('workoutsCompleted', '0');
+    localStorage.setItem('caloriesBurned', '0');
+    window.location.reload();
   };
 
   return (
@@ -25,6 +32,7 @@ const Homepage = () => {
         <div className="welcome-backdrop">
           <h1>Welcome back, User!</h1>
           <p>Here's your fitness journey at a glance</p>
+          <button onClick={resetCounters} className="reset-button">Reset Progress</button>
         </div>
 
         {/* Progress Cards */}

@@ -26,7 +26,7 @@
 body[data-menu="true"] #menu-toggle {
   background-color: rgb(0, 0, 0);
 }
-
+   
 #menu-toggle i {
   position: absolute;
   left: 50%;
@@ -64,7 +64,7 @@ body[data-menu="true"] #menu-toggle .close {
   align-items: center;
   justify-content: center;
 }
-
+    
 body[data-menu="true"] #menu {
   opacity: 1;
   visibility: visible;
@@ -121,4 +121,34 @@ body[data-menu="true"] #menu-links {
 
 .menu-link:hover .menu-link-image {
   transform: scale(1.05);
+}
+
+/* Spinner styles */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Light gray */
+  border-top: 4px solid #4CAF50; /* Green */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.logout-spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000; /* Ensure it's above other content */
+  color: white;
 }

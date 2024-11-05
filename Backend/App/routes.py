@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from . import db
-from .models import User, Sleep
+from .models import User, Sleep, WorkoutList
 from datetime import datetime, timedelta
 import jwt
 from functools import wraps
@@ -272,4 +272,68 @@ def init_auth_routes(app):
         except Exception as e:
             db.session.rollback()
             print(f"Error deleting sleep record: {str(e)}")  # Add debug print
+            return jsonify({'error': str(e)}), 400
+
+    # Workout tracking routes
+    @app.route('/api/workouts/stats', methods=['GET'])
+    @token_required
+    def get_workout_stats(current_user):
+        try:
+            # Get workouts for the current user
+            workouts = WorkoutList.query.filter_by(user_id=current_user.id).all()
+            
+            # Calculate total workouts completed
+            total_workouts = len(workouts)
+            
+            # Calculate total calories burned (based on workout duration and difficulty)
+            total_calories = sum([
+                workout.duration * {
+                    'easy': 5,      # 5 calories per minute for easy workouts
+                    'medium': 7,    # 7 calories per minute for medium workouts
+                    'hard': 10      # 10 calories per minute for hard workouts
+                }.get(workout.difficulty.lower(), 5)  # default to 5 if difficulty not recognized
+                for workout in workouts
+            ])
+            
+            return jsonify({
+                'total_workouts': total_workouts,
+                'total_calories': total_calories
+            }), 200
+            
+        except Exception as e:
+            print(f"Error getting workout stats: {str(e)}")
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/api/workouts', methods=['POST'])
+    @token_required
+    def add_workout(current_user):
+        try:
+            data = request.get_json()
+            
+            # Create new workout record
+            workout = WorkoutList(
+                user_id=current_user.id,
+                workout_type=data['workoutType'],
+                difficulty=data['difficulty'],
+                duration=data['duration'],
+                date=datetime.strptime(data['date'], '%Y-%m-%d').date() if 'date' in data else None
+            )
+            
+            db.session.add(workout)
+            db.session.commit()
+            
+            return jsonify({
+                'message': 'Workout added successfully',
+                'workout': {
+                    'id': workout.id,
+                    'type': workout.workout_type,
+                    'difficulty': workout.difficulty,
+                    'duration': workout.duration,
+                    'date': workout.date.strftime('%Y-%m-%d') if workout.date else None
+                }
+            }), 201
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error adding workout: {str(e)}")
             return jsonify({'error': str(e)}), 400
