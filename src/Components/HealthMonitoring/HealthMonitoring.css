@@ -4,6 +4,7 @@
   margin: 0 auto;
   align-items: center;
   background: rgb(185, 210, 191);
+  border-radius: 40px;
 }
 
 .form-group {
