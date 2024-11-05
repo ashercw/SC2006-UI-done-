@@ -23,36 +23,63 @@ const Homepage = () => {
     }));
   });
 
+  // Get latest values from localStorage
+  const [workoutsCompleted, setWorkoutsCompleted] = useState(
+    parseInt(localStorage.getItem('workoutsCompleted') || '0')
+  );
+  const [caloriesBurned, setCaloriesBurned] = useState(
+    parseInt(localStorage.getItem('caloriesBurned') || '0')
+  );
+
   const userProgress = {
-    workoutsCompleted: weeklyData.reduce((sum, day) => sum + day.workouts, 0),
-    caloriesBurned: weeklyData.reduce((sum, day) => sum + day.calories, 0),
+    workoutsCompleted: workoutsCompleted,
+    caloriesBurned: caloriesBurned,
     weeklyGoal: 5,
     monthlyGoal: 20
   };
 
+  // Update state when localStorage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newWorkouts = parseInt(localStorage.getItem('workoutsCompleted') || '0');
+      const newCalories = parseInt(localStorage.getItem('caloriesBurned') || '0');
+      
+      setWorkoutsCompleted(newWorkouts);
+      setCaloriesBurned(newCalories);
+
+      // Update today's data in weeklyData
+      setWeeklyData(prevData => {
+        return prevData.map(day => {
+          if (day.isToday) {
+            return {
+              ...day,
+              workouts: newWorkouts,
+              calories: newCalories
+            };
+          }
+          return day;
+        });
+      });
+    };
+
+    // Listen for storage changes
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Check for updates every second
+    const interval = setInterval(() => {
+      handleStorageChange();
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
+
   useEffect(() => {
     // Save weekly data to localStorage whenever it changes
     localStorage.setItem('weeklyData', JSON.stringify(weeklyData));
-    // Update the total counters
-    localStorage.setItem('workoutsCompleted', userProgress.workoutsCompleted.toString());
-    localStorage.setItem('caloriesBurned', userProgress.caloriesBurned.toString());
-  }, [weeklyData, userProgress.workoutsCompleted, userProgress.caloriesBurned]);
-
-  // Function to add workout and calories for today
-  const addWorkout = (workoutCount, calorieCount) => {
-    setWeeklyData(prevData => {
-      return prevData.map(day => {
-        if (day.isToday) {
-          return {
-            ...day,
-            workouts: day.workouts + workoutCount,
-            calories: day.calories + calorieCount
-          };
-        }
-        return day;
-      });
-    });
-  };
+  }, [weeklyData]);
 
   // Function to reset counters
   const resetCounters = () => {
@@ -68,6 +95,10 @@ const Homepage = () => {
     }));
 
     setWeeklyData(newWeeklyData);
+    setWorkoutsCompleted(0);
+    setCaloriesBurned(0);
+    
+    // Reset localStorage values
     localStorage.setItem('weeklyData', JSON.stringify(newWeeklyData));
     localStorage.setItem('workoutsCompleted', '0');
     localStorage.setItem('caloriesBurned', '0');
