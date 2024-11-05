@@ -417,36 +417,7 @@ const HealthMonitoring = () => {
               </p>
             )}
           </section>
-
-          <section className="posture-upload">
-            <h3>Posture Analysis</h3>
-            <div className="upload-container">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setSelectedImage(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-                id="posture-upload"
-              />
-              <label htmlFor="posture-upload" className="upload-button">
-                Choose Photo
-              </label>
-              {selectedImage && (
-                <div className="image-preview">
-                  <img src={selectedImage} alt="Posture preview" />
-                </div>
-              )}
-            </div>
-          </section>
-
+          
           <section className="goal-setting">
             <h3>Set Health Goals</h3>
             <form onSubmit={(e) => {

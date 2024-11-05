@@ -9,7 +9,7 @@ const MenuPopup = () => {
 
   const routes = [
     { 
-      path: '/homepage',
+      path: '/Homepage',
       name: 'Homepage',
       image: 'https://img.freepik.com/premium-vector/world-health-day-hand-drawn-set_98292-30408.jpg'
     },
