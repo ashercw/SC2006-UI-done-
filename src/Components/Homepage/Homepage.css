@@ -247,14 +247,6 @@
   .background span:nth-child(0) { /* ... */ }
   /* ... rest of the background span styles ... */
   .background span:nth-child(20) { /* ... */ }
-
-  .welcome-backdrop {
-    background-color: rgba(255, 255, 255, 0.818);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
-  }
   
   .main-content {
     width: 80%;
