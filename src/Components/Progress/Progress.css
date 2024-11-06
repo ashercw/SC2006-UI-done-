@@ -69,16 +69,28 @@ button:hover {
 }
 
 .goals-list {
-  max-height: 200px;
-  overflow-y: auto;
+    max-height: 200px; /* Keep height limit */
+    overflow-y: auto; /* Keep overflow hidden */
+    text-align: left; /* Align text to the left */
+    padding: 0; /* Reset padding */
 }
 
 .goal-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+    display: flex; /* Maintain flex for alignment */
+    align-items: center; /* Center vertically */
+    justify-content: flex-start; /* Align to the left */
+    gap: 10px; /* Space between checkbox and text */
+    padding: 12px; /* Increased padding for more size */
+    border-bottom: 1px solid #eee; /* Divider line */
+}
+
+
+.goal-item input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+.goal-item span {
+  flex: 1;
 }
 
 .goal-item span.completed {
