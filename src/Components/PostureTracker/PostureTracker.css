@@ -1,10 +1,75 @@
-.posture-correction-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #8dcb91b7;
-  border-radius: 40px;
+.posture-track-background {
+  background-color: #f3f7f4;
+  opacity: 0.8;
+  background-image:  linear-gradient(135deg, #8ecc8f 25%, transparent 25%), linear-gradient(225deg, #8ecc8f 25%, transparent 25%), linear-gradient(45deg, #8ecc8f 25%, transparent 25%), linear-gradient(315deg, #8ecc8f 25%, #f3f7f4 25%);
+  background-position:  8px 0, 8px 0, 0 0, 0 0;
+  background-size: 8px 8px;
+  background-repeat: repeat;
+  min-height: 100vh; /* Ensures full viewport height */
+  display: flex;
+  flex-direction: column; /* Stacks header and container vertically */
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+}
+
+.divider {
+  width: 40%; /* Adjust width as needed */
+  height: 3px;
+  background-color: rgba(0, 0, 0, 0.2); /* Light gray color */
+  border: none;
+  margin: 20px auto; /* Center and add space around */
+}
+
+.app-header {
+  width: 80%;
+  padding: 15px 20px;
+  background-color: #a0b2bedf; /* Darker green for contrast */
+  border-radius: 35px;
+  color: white;
   text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  top: 0;
+  z-index: 1000; /* Ensure it stays above other elements */
+  margin-bottom: 2rem;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.posture-logo{
+  background: rgba(128, 170, 147, 0.559);
+  padding: 1.2rem;
+  width: 300px;
+  border-radius: 20px;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  margin: 0 auto
+}
+
+.posture{
+  width: 200px; /* Adjust the size as needed */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Centers the logo */
+}
+
+.posture-correction-container {
+  padding: 40px;
+  max-width: 800px;
+  width: 80rem;
+  margin: 0 auto;
+  margin-top: 3rem;
+  background-color: rgba(141, 203, 145, 0.935); /* Slight transparency */
+  border-radius: 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333; /* Darker text for contrast */
 }
 
 .controls {

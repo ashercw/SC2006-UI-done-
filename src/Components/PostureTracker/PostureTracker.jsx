@@ -168,69 +168,81 @@ const PostureTracker = () => {
   */
 
   return (
-    <div className="posture-correction-container">
-      <h2>Posture Correction</h2>
-      
-      {isLoading && (
-        <div className="loading-message">
-          Loading... Please wait
-        </div>
-      )}
-      
-      <div className="controls">
-        <button 
-          onClick={startTracking} 
-          disabled={isTracking || isLoading || !modelLoaded}
-          className={isTracking || isLoading || !modelLoaded ? 'disabled' : ''}
-        >
-          {isLoading ? 'Initializing...' : 'Start Tracking'}
-        </button>
-        <button 
-          onClick={stopTracking} 
-          disabled={!isTracking || isLoading}
-          className={!isTracking || isLoading ? 'disabled' : ''}
-        >
-          Stop Tracking
-        </button>
+    <div className="posture-track-background">
+      <div class="app-header">    
+      <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" />         
       </div>
 
-      <div className="video-container">
-        <video 
-          ref={videoRef} 
-          className="webcam-preview" 
-          playsInline
-          style={{ display: isTracking ? 'block' : 'none' }}
-        />
-        {isTracking && (
-          <div className="tracking-overlay">
-            {postureData ? postureData.overall : 'Starting tracking...'}
+      <div className="posture-correction-container">
+        <h2>Posture Correction</h2>
+        <hr class="divider"></hr>
+        <h2>Please ensure your upper body is visible :) </h2> 
+
+        <div className="posture-logo">
+          <img src= "/posture.jpeg" alt="Fitness App Logo" className="posture" /> 
+      </div>
+
+        {isLoading && (
+          <div className="loading-message">
+            Loading... Please wait
+          </div>
+        )}
+        
+        <div className="controls">
+          <button 
+            onClick={startTracking} 
+            disabled={isTracking || isLoading || !modelLoaded}
+            className={isTracking || isLoading || !modelLoaded ? 'disabled' : ''}
+          >
+            {isLoading ? 'Initializing...' : 'Start Tracking'}
+          </button>
+          <button 
+            onClick={stopTracking} 
+            disabled={!isTracking || isLoading}
+            className={!isTracking || isLoading ? 'disabled' : ''}
+          >
+            Stop Tracking
+          </button>
+        </div>
+
+        <div className="video-container">
+          <video 
+            ref={videoRef} 
+            className="webcam-preview" 
+            playsInline
+            style={{ display: isTracking ? 'block' : 'none' }}
+          />
+          {isTracking && (
+            <div className="tracking-overlay">
+              {postureData ? postureData.overall : 'Starting tracking...'}
+            </div>
+          )}
+        </div>
+
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
+        {postureData && (
+          <div className="posture-data">
+            <div className={`confidence-indicator ${postureData.confidence}`}>
+              Detection Confidence: {postureData.confidence.charAt(0).toUpperCase() + postureData.confidence.slice(1)}
+            </div>
+            <h3>Posture Analysis:</h3>
+            <p>Shoulder Level: <span className={postureData.shoulderLevel === 'Good' ? 'good' : 'warning'}>
+              {postureData.shoulderLevel}
+            </span></p>
+            <p>Vertical Alignment: <span className={postureData.verticalAlignment === 'Good' ? 'good' : 'warning'}>
+              {postureData.verticalAlignment}
+            </span></p>
+            <p>Overall: <span className={postureData.overall === 'Good Posture' ? 'good' : 'warning'}>
+              {postureData.overall}
+            </span></p>
           </div>
         )}
       </div>
-
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
-
-      {postureData && (
-        <div className="posture-data">
-          <div className={`confidence-indicator ${postureData.confidence}`}>
-            Detection Confidence: {postureData.confidence.charAt(0).toUpperCase() + postureData.confidence.slice(1)}
-          </div>
-          <h3>Posture Analysis:</h3>
-          <p>Shoulder Level: <span className={postureData.shoulderLevel === 'Good' ? 'good' : 'warning'}>
-            {postureData.shoulderLevel}
-          </span></p>
-          <p>Vertical Alignment: <span className={postureData.verticalAlignment === 'Good' ? 'good' : 'warning'}>
-            {postureData.verticalAlignment}
-          </span></p>
-          <p>Overall: <span className={postureData.overall === 'Good Posture' ? 'good' : 'warning'}>
-            {postureData.overall}
-          </span></p>
-        </div>
-      )}
     </div>
   );
 };
