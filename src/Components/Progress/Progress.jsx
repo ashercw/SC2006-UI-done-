@@ -89,6 +89,24 @@ const Progress = () => {
       <div className="progress-container">
         <h1>Progress Tracking 📊</h1>
         
+        <section className="stats-summary">
+          <h2>Summary</h2>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <h3>Total Goals</h3>
+              <p>{progressData.goals.length}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Completed Goals</h3>
+              <p>{progressData.goals.filter(goal => goal.completed).length}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Weight Entries</h3>
+              <p>{progressData.weight.length}</p>
+            </div>
+          </div>
+        </section>
+        
         <div className="side-by-side">
 
           <section className="weight-tracker">
@@ -154,23 +172,6 @@ const Progress = () => {
           </div>
         </section>
 
-        <section className="stats-summary">
-          <h2>Summary</h2>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <h3>Total Goals</h3>
-              <p>{progressData.goals.length}</p>
-            </div>
-            <div className="stat-card">
-              <h3>Completed Goals</h3>
-              <p>{progressData.goals.filter(goal => goal.completed).length}</p>
-            </div>
-            <div className="stat-card">
-              <h3>Weight Entries</h3>
-              <p>{progressData.weight.length}</p>
-            </div>
-          </div>
-        </section>
       </div>
     </div>
   );
