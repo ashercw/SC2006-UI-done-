@@ -1,15 +1,63 @@
+.progress-background {
+  background-color: #8ecc8f;
+  opacity: 0.8;
+  background-image: radial-gradient(black 0.5px, #e2f4e3 0.5px);
+  background-size: 15px 15px;
+}
+
+.app-header {
+  width: 80% !important;
+  padding: 15px 20px !important;
+  background-color: #a0b2bedf !important; /* Darker green for contrast */
+  border-radius: 35px !important;
+  color: white !important;
+  text-align: center !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2) !important; /* Soft shadow for depth */
+  top: 0 !important;
+  z-index: 1000 !important; /* Ensure it stays above other elements */
+  margin-bottom: 2rem !important;
+}
+
+/* .app-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+} */
+
 .progress-container {
-  padding: 50px;
-  max-width: 1000px;
-  background: rgb(185, 210, 191);
-  border-radius: 40px;
+  padding: 40px;
+  max-width: 800px;
+  width: 80rem;
   margin: 0 auto;
+  margin-top: 3rem;
+  background-color: rgba(141, 203, 145, 0.935); /* Slight transparency */
+  border-radius: 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333; /* Darker text for contrast */
 }
 
 .progress-container h1 {
   text-align: center;
-  color: #333;
+  color: rgb(14, 68, 22);
   margin-bottom: 35px;
+}
+
+.side-by-side {
+  display: flex; /* Make them side by side */
+  gap: 10px; /* Space between the sections */
+  justify-content: space-between; /* Optional: if you want space between them */
+  flex-wrap: wrap; /* Allow wrapping if the screen size is too small */
+  width: 100%; /*Ensure the parent container takes full width */
+}
+
+.weight-tracker, .goals-tracker {
+  width: 43%; /* Take up almost half of the container's width each */
+  background-color: white; /* Ensure background is white */
+  border-radius: 8px; /* Round corners */
+  padding: 20px; /* Padding for the content */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
 section {
@@ -71,26 +119,26 @@ button:hover {
 .goals-list {
     max-height: 200px; /* Keep height limit */
     overflow-y: auto; /* Keep overflow hidden */
-    text-align: left; /* Align text to the left */
     padding: 0; /* Reset padding */
 }
 
 .goal-item {
     display: flex; /* Maintain flex for alignment */
     align-items: center; /* Center vertically */
-    justify-content: flex-start; /* Align to the left */
-    gap: 10px; /* Space between checkbox and text */
+    justify-content: space-between; /* Align to the left
+    /* gap: 10px; Space between checkbox and text */
     padding: 12px; /* Increased padding for more size */
     border-bottom: 1px solid #eee; /* Divider line */
 }
 
-
-.goal-item input[type="checkbox"] {
-  margin-left: 10px;
-}
-
 .goal-item span {
   flex: 1;
+  text-align: left;
+}
+
+.goal-item input[type="checkbox"] {
+  order: 2;
+  margin-left: 10px;
 }
 
 .goal-item span.completed {
