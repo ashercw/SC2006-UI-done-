@@ -4,13 +4,15 @@
     }
 }
   
+/* The line you need to change is here:
+   Change background: #164536; to background: transparent; */
 .background {
     position: fixed;
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
-    background: #164536;
+    background: #164536;  /* <-- This is the line you need to change to transparent */
     overflow: hidden;
     z-index: -1;
     transition: background-color 0.3s ease;

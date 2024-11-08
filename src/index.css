@@ -1,24 +1,24 @@
 /* Base theme variables */
 :root {
   /* Light Theme */
-  --primary-bg-light: #ffffff;
-  --secondary-bg-light: #ffffff;
+  --primary-bg-light: transparent;
+  --secondary-bg-light: rgba(255, 255, 255, 0.8);
   --text-color-light: #333333;
   --border-color-light: #e0e0e0;
   --accent-color-light: #4CAF50; /* Keep green for light mode */
   --hover-color-light: #45a049;
   --shadow-color-light: rgba(0, 0, 0, 0.1);
-  --input-bg-light: #f5f5f5;
+  --input-bg-light: rgba(245, 245, 245, 0.7);
 
   /* Dark Theme */
-  --primary-bg-dark: #1a1a1a;
-  --secondary-bg-dark: #2d2d2d;
+  --primary-bg-dark: transparent;
+  --secondary-bg-dark: rgba(45, 45, 45, 0.7);
   --text-color-dark: #ffffff;
   --border-color-dark: #404040;
   --accent-color-dark: #9c27b0; /* Purple for dark mode */
   --hover-color-dark: #ba68c8;
   --shadow-color-dark: rgba(0, 0, 0, 0.3);
-  --input-bg-dark: #3d3d3d;
+  --input-bg-dark: rgba(61, 61, 61, 0.8);
 }
 
 /* Default light theme */
@@ -134,6 +134,7 @@ button:active {
   padding: 20px;
   margin: 20px;
   box-shadow: 0 2px 4px var(--shadow-color);
+  backdrop-filter: blur(5px);
 }
 
 /* Card styles */
@@ -144,6 +145,7 @@ button:active {
   margin: 10px;
   box-shadow: 0 2px 4px var(--shadow-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(5px);
 }
 
 .card:hover {
@@ -200,6 +202,7 @@ button:active {
 [data-theme='dark'] .container,
 [data-theme='dark'] .card {
   background-color: var(--secondary-bg);
+  backdrop-filter: blur(5px);
 }
 
 /* Status indicators */
