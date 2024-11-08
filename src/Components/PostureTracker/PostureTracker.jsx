@@ -96,22 +96,6 @@ const PostureTracker = () => {
         setPostureData(generateRandomPosture());
       }, 2000);
 
-      /* Comment out actual pose detection for now
-      const detectPose = async () => {
-        if (!isTracking || !detectorRef.current || !videoRef.current) return;
-        try {
-          const poses = await detectorRef.current.estimatePoses(videoRef.current);
-          if (poses.length > 0) {
-            analyzePose(poses[0]);
-          }
-          requestRef.current = requestAnimationFrame(detectPose);
-        } catch (err) {
-          console.error('Pose detection error:', err);
-        }
-      };
-      requestRef.current = requestAnimationFrame(detectPose);
-      */
-
     } catch (err) {
       console.error('Camera error:', err);
       setError('Failed to access camera. Please check permissions.');
@@ -134,53 +118,20 @@ const PostureTracker = () => {
     setPostureData(null);
   };
 
-  /* Comment out actual pose analysis for now
-  const analyzePose = (pose) => {
-    const keypoints = pose.keypoints;
-    const shoulders = keypoints.filter(kp => 
-      kp.name === 'left_shoulder' || kp.name === 'right_shoulder'
-    );
-    const hips = keypoints.filter(kp => 
-      kp.name === 'left_hip' || kp.name === 'right_hip'
-    );
-
-    if (shoulders.length === 2 && hips.length === 2) {
-      const shoulderSlope = Math.abs(
-        (shoulders[1].y - shoulders[0].y) / (shoulders[1].x - shoulders[0].x)
-      );
-
-      const verticalSlope = Math.abs(
-        ((hips[0].x + hips[1].x)/2 - (shoulders[0].x + shoulders[1].x)/2) / 
-        ((hips[0].y + hips[1].y)/2 - (shoulders[0].y + shoulders[1].y)/2)
-      );
-
-      const isShoulderLevel = shoulderSlope < 0.2;
-      const isVerticalAligned = verticalSlope < 0.2;
-
-      setPostureData({
-        shoulderLevel: isShoulderLevel ? 'Good' : 'Needs Adjustment',
-        verticalAlignment: isVerticalAligned ? 'Good' : 'Needs Adjustment',
-        overall: isShoulderLevel && isVerticalAligned ? 'Good Posture' : 'Poor Posture',
-        confidence: 'high'
-      });
-    }
-  };
-  */
-
   return (
     <div className="posture-track-background">
-      <div class="app-header">    
-      <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" />         
+      <div className="app-header">    
+        <img src="/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" />         
       </div>
 
       <div className="posture-correction-container">
         <h2>Posture Correction</h2>
-        <hr class="divider"></hr>
+        <hr className="divider" />
         <h2>Please ensure your upper body is visible :) </h2> 
 
         <div className="posture-logo">
-          <img src= "/posture.jpeg" alt="Fitness App Logo" className="posture" /> 
-      </div>
+          <img src="/posture.jpeg" alt="Posture Reference" className="posture" /> 
+        </div>
 
         {isLoading && (
           <div className="loading-message">
