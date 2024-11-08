@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { LoadingProvider } from './contexts/LoadingContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './Components/ErrorBoundary/ErrorBoundary';
 import Login from './Components/Login/Login';
 import Signup from './Components/Signup/Signup';
@@ -16,7 +17,7 @@ import Progress from './Components/Progress/Progress';
 import Settings from './Components/Settings/Settings';
 import HealthMonitoring from './Components/HealthMonitoring/HealthMonitoring';
 import MenuPopup from './Components/MenuPopup/MenuPopup';
-import PostureTracker from './Components/PostureTracker/PostureTracker'; // Import the Posture Correction component
+import PostureTracker from './Components/PostureTracker/PostureTracker';
 import { useLocation } from 'react-router-dom';
 
 // Layout wrapper component that includes the MenuPopup
@@ -52,78 +53,80 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <LoadingProvider>
-        <Router>
-          <div className="app-container">
-            <Routes>
-              <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="/login" element={
-                <PageLayout>
-                  <Login />
-                </PageLayout>
-              } />
-              <Route path="/signup" element={
-                <PageLayout>
-                  <Signup />
-                </PageLayout>
-              } />
-              <Route path="/about" element={
-                <PageLayout>
-                  <About />
-                </PageLayout>
-              } />
-              <Route path="/homepage" element={
-                <PageLayout>
-                  <Homepage />
-                </PageLayout>
-              } />
-              <Route path="/meal-tracker" element={
-                <PageLayout>
-                  <MealTracker />
-                </PageLayout>
-              } />
-              <Route path="/workout-manager" element={
-                <PageLayout>
-                  <WorkoutManager />
-                </PageLayout>
-              } />
-              <Route path="/progress" element={
-                <PageLayout>
-                  <Progress />
-                </PageLayout>
-              } />
-              <Route path="/settings" element={
-                <PageLayout>
-                  <Settings />
-                </PageLayout>
-              } />
-              <Route path="/health-monitoring" element={
-                <PageLayout>
-                  <HealthMonitoring />
-                </PageLayout>
-              } />
-              {/* New Posture Correction Route */}
-              <Route path="/posture-correction" element={
-                <PageLayout>
-                  <PostureTracker />
-                </PageLayout>
-              } />
-            </Routes>
-            
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </div>
-        </Router>
-      </LoadingProvider>
+      <ThemeProvider>
+        <LoadingProvider>
+          <Router>
+            <div className="app-container">
+              <Routes>
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/login" element={
+                  <PageLayout>
+                    <Login />
+                  </PageLayout>
+                } />
+                <Route path="/signup" element={
+                  <PageLayout>
+                    <Signup />
+                  </PageLayout>
+                } />
+                <Route path="/about" element={
+                  <PageLayout>
+                    <About />
+                  </PageLayout>
+                } />
+                <Route path="/homepage" element={
+                  <PageLayout>
+                    <Homepage />
+                  </PageLayout>
+                } />
+                <Route path="/meal-tracker" element={
+                  <PageLayout>
+                    <MealTracker />
+                  </PageLayout>
+                } />
+                <Route path="/workout-manager" element={
+                  <PageLayout>
+                    <WorkoutManager />
+                  </PageLayout>
+                } />
+                <Route path="/progress" element={
+                  <PageLayout>
+                    <Progress />
+                  </PageLayout>
+                } />
+                <Route path="/settings" element={
+                  <PageLayout>
+                    <Settings />
+                  </PageLayout>
+                } />
+                <Route path="/health-monitoring" element={
+                  <PageLayout>
+                    <HealthMonitoring />
+                  </PageLayout>
+                } />
+                <Route path="/posture-correction" element={
+                  <PageLayout>
+                    <PostureTracker />
+                  </PageLayout>
+                } />
+              </Routes>
+              
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'}
+              />
+            </div>
+          </Router>
+        </LoadingProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
