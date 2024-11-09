@@ -15,6 +15,10 @@ body {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+[data-theme='dark'] .meal-tracker {
+    background: #9c27b0;
+  }
+
 .title {
     text-align: center;
     font-size: 28px;
@@ -79,6 +83,10 @@ body {
     background-color: #f1f8e9;
     border-radius: 8px;
 }
+
+[data-theme='dark'] .nutrition-summary {
+    background: magenta;
+  }
 
 .nutrition-total-container {
     display: flex;

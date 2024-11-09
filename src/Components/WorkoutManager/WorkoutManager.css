@@ -7,6 +7,10 @@
   margin: 0 auto;
 }
 
+[data-theme='dark'] .workout-manager {
+  background: #9c27b0;
+}
+
 .workout-manager h1 {
   text-align: center;
   color: #333;
@@ -84,8 +88,16 @@
   transition: background-color 0.3s;
 }
 
+[data-theme='dark'] .submit-btn {
+  background-color: #9c27b0;
+}
+
 .submit-btn:hover {
   background-color: #45a049;
+}
+
+[data-theme='dark'] .submit-btn:hover {
+  background-color: #7b1fa2;
 }
 
 /* Summary Section */
@@ -143,6 +155,10 @@
   border-left: 4px solid #4CAF50;
 }
 
+[data-theme='dark'] .workout-item {
+  border-left: 4px solid #9c27b0;
+}
+
 .workout-item h3 {
   color: #333;
   margin: 0 0 0.5rem 0;
@@ -189,8 +205,16 @@
   color: white !important;
 }
 
+[data-theme='dark'] .react-calendar__tile--active {
+  background: #9c27b0 !important;
+}
+
 .react-calendar__tile--now {
   background: #e6f4e6 !important;
+}
+
+[data-theme='dark'] .react-calendar__tile--now {
+  background: #e1bee7 !important;
 }
 
 .react-calendar__tile:hover {
@@ -199,4 +223,8 @@
 
 .react-calendar__tile--active:hover {
   background: #45a049 !important;
+}
+
+[data-theme='dark'] .react-calendar__tile--active:hover {
+  background: #7b1fa2 !important;
 }
