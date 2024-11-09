@@ -25,7 +25,7 @@
 
 
 .health-monitoring-container {
-  width: 900px;
+  width: 850px;
   max-width: 1200px; /* Adjust as needed */
   background: rgb(185, 210, 191);
   border-radius: 20px;
@@ -41,6 +41,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  margin-left: -50px;
+  font-size: 17px;
 }
 
 .side-by-side {
@@ -66,7 +68,7 @@ label {
 
 input, select {
   /* width: 95%; Optional: Make inputs full width */
-  width: 200px;
+  width: 250px;
   padding: 8px; /* Optional: Add padding for better aesthetics */
 }
 
@@ -146,6 +148,7 @@ input, select {
 /* Sleep History Styles */
 .sleep-history {
   margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .history-table {

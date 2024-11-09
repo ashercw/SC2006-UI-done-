@@ -304,8 +304,10 @@ const HealthMonitoring = () => {
         <div className="health-monitoring">
           <h2 align = 'center'>Health Monitoring</h2>
           
+
           <section className="sleep-tracking">
             <h3>Sleep Tracking</h3>
+            <hr className="divider" />
             <form onSubmit={handleSleepSubmit}>
             <div className="side-by-side">
               <div className="form-group">
@@ -378,6 +380,7 @@ const HealthMonitoring = () => {
 
           <section className="sleep-history">
             <h3>Sleep History</h3>
+            <hr className="divider" />
             <div className="history-table">
               {loading ? (
                 <p>Loading sleep records...</p>
@@ -412,6 +415,7 @@ const HealthMonitoring = () => {
 
           <section className="progress-visualization">
             <h3>Sleep Progress</h3>
+            <hr className="divider" />
             {loading ? (
               <p>Loading sleep progress...</p>
             ) : sleepHistory.length > 0 ? (
