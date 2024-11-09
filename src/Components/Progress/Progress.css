@@ -1,125 +1,231 @@
+.progress-background {
+  background-color: #8ecc8f;
+  opacity: 0.8;
+  background-image: radial-gradient(black 0.5px, #e2f4e3 0.5px);
+  background-size: 15px 15px;
+}
+
+.app-header {
+  width: 80% !important;
+  padding: 15px 20px !important;
+  background-color: #a0b2bedf !important;
+  border-radius: 35px !important;
+  color: white !important;
+  text-align: center !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2) !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  margin-bottom: 2rem !important;
+}
+
 .progress-container {
-  padding: 50px;
   max-width: 1000px;
-  background: rgb(185, 210, 191);
-  border-radius: 40px;
-  margin: 0 auto;
+  margin: 2rem auto;
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: var(--secondary-bg);
+  border-radius: 20px;
+  box-shadow: 0px 4px 12px var(--shadow-color);
 }
 
 .progress-container h1 {
   text-align: center;
-  color: #333;
-  margin-bottom: 35px;
+  margin-bottom: 2rem;
+  color: var(--text-color);
 }
 
-section {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.progress-container section {
+  background-color: var(--secondary-bg);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px var(--shadow-color);
 }
 
-section h2 {
-  color: #444;
-  margin-bottom: 15px;
+.progress-container h2 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
 }
 
+/* Weight Tracker */
 .weight-input, .goal-input {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-input[type="number"],
-input[type="text"] {
+.weight-input input, .goal-input input {
   flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
 }
 
-button {
-  padding: 8px 16px;
-  background-color: #4CAF50;
+.weight-input input:focus, .goal-input input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.weight-input button, .goal-input button {
+  padding: 0.8rem 1.5rem;
+  background-color: var(--accent-color);
   color: white;
-  font-weight: bold;
-  font-size: medium;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #45a049;
+.weight-input button:hover, .goal-input button:hover {
+  background-color: var(--hover-color);
+  transform: translateY(-2px);
 }
 
+/* Weight History */
 .weight-history {
-  max-height: 200px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .weight-entry {
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+  padding: 0.8rem;
+  background-color: var(--input-bg);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
 }
 
+.weight-entry:hover {
+  transform: translateX(5px);
+}
+
+/* Goals List */
 .goals-list {
-    max-height: 200px; /* Keep height limit */
-    overflow-y: auto; /* Keep overflow hidden */
-    text-align: left; /* Align text to the left */
-    padding: 0; /* Reset padding */
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .goal-item {
-    display: flex; /* Maintain flex for alignment */
-    align-items: center; /* Center vertically */
-    justify-content: flex-start; /* Align to the left */
-    gap: 10px; /* Space between checkbox and text */
-    padding: 12px; /* Increased padding for more size */
-    border-bottom: 1px solid #eee; /* Divider line */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  background-color: var(--input-bg);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  border-bottom: 1px solid var(--border-color);
 }
 
+.goal-item:hover {
+  transform: translateX(5px);
+}
 
 .goal-item input[type="checkbox"] {
-  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent-color);
 }
 
 .goal-item span {
   flex: 1;
+  color: var(--text-color);
 }
 
 .goal-item span.completed {
   text-decoration: line-through;
-  color: #888;
+  opacity: 0.7;
 }
 
+/* Suggestions */
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--input-bg);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.suggestion-item:hover {
+  transform: translateX(5px);
+}
+
+.suggestion-item i {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.suggestion-item p {
+  margin: 0;
+  flex: 1;
+  color: var(--text-color);
+}
+
+/* Stats Summary */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
 }
 
 .stat-card {
-  background: #2f303138;
-  padding: 15px;
-  border-radius: 6px;
+  background-color: var(--input-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
 }
 
 .stat-card h3 {
-  font-size: 14px;
-  color: #4a4646;
-  margin-bottom: 8px;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
 }
 
 .stat-card p {
-  font-size: 24px;
-  color: #333333;
+  color: var(--accent-color);
+  font-size: 2rem;
   font-weight: bold;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .progress-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .weight-input, .goal-input {
+    flex-direction: column;
+  }
+
+  .weight-input button, .goal-input button {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -79,86 +79,100 @@ const Progress = () => {
   };
 
   return (
-    <div className="progress-container">
-      <h1>Progress Tracking</h1>
-      
-      <section className="weight-tracker">
-        <h2>Weight Tracking</h2>
-        <div className="weight-input">
-          <input
-            type="number"
-            value={weightEntry}
-            onChange={(e) => setWeightEntry(e.target.value)}
-            placeholder="Enter weight (kg)"
-          />
-          <button onClick={addWeight}>Add Weight</button>
-        </div>
-        <div className="weight-history">
-          {progressData.weight.map((entry, index) => (
-            <div key={index} className="weight-entry">
-              <span>{entry.date}</span>
-              <span>{entry.value} kg</span>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      <section className="goals-tracker">
-        <h2>Fitness Goals</h2>
-        <div className="goal-input">
-          <input
-            type="text"
-            value={newGoal}
-            onChange={(e) => setNewGoal(e.target.value)}
-            placeholder="Enter new goal"
-          />
-          <button onClick={addGoal}>Add Goal</button>
-        </div>
-        <div className="goals-list">
-          {progressData.goals.map((goal, index) => (
-            <div key={index} className="goal-item">
+    <div className="progress-background">
+
+      <div className="app-header">    
+      <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" />         
+      </div>
+
+      <div className="progress-container">
+        <h1>Progress Tracking 📊</h1>
+        
+        <section className="stats-summary">
+          <h2>Summary</h2>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <h3>Total Goals</h3>
+              <p>{progressData.goals.length}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Completed Goals</h3>
+              <p>{progressData.goals.filter(goal => goal.completed).length}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Weight Entries</h3>
+              <p>{progressData.weight.length}</p>
+            </div>
+          </div>
+        </section>
+        
+        <div className="side-by-side">
+
+          <section className="weight-tracker">
+            <h2>Weight Tracking</h2>
+            <div className="weight-input">
               <input
-                type="checkbox"
-                checked={goal.completed}
-                onChange={() => toggleGoal(index)}
+                type="number"
+                value={weightEntry}
+                onChange={(e) => setWeightEntry(e.target.value)}
+                placeholder="Enter your weight (kg) ⚖️"
               />
-              <span className={goal.completed ? 'completed' : ''}>
-                {goal.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+              <button onClick={addWeight}>Add Weight</button>
+          </div>
 
-      <section className="progress-suggestions">
-        <h2>Suggestions</h2>
-        <div className="suggestions-list">
-          {generateSuggestions().map((suggestion, index) => (
-            <div key={index} className="suggestion-item">
-              <i className="fas fa-lightbulb"></i>
-              <p>{suggestion}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="weight-history">
+            {progressData.weight.map((entry, index) => (
+              <div key={index} className="weight-entry">
+                <span>{entry.date}</span>
+                <span>{entry.value} kg</span>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      <section className="stats-summary">
-        <h2>Summary</h2>
-        <div className="stats-grid">
-          <div className="stat-card">
-            <h3>Total Goals</h3>
-            <p>{progressData.goals.length}</p>
+        <section className="goals-tracker">
+          <h2>Fitness Goals</h2>
+          <div className="goal-input">
+            <input
+              type="text"
+              value={newGoal}
+              onChange={(e) => setNewGoal(e.target.value)}
+              placeholder="Enter a new goal 💪"
+            />
+            <button onClick={addGoal}>Add Goal</button>
           </div>
-          <div className="stat-card">
-            <h3>Completed Goals</h3>
-            <p>{progressData.goals.filter(goal => goal.completed).length}</p>
+          <div className="goals-list">
+            {progressData.goals.map((goal, index) => (
+              <div key={index} className="goal-item">
+                <input
+                  type="checkbox"
+                  checked={goal.completed}
+                  onChange={() => toggleGoal(index)}
+                />
+                <span className={goal.completed ? 'completed' : ''}>
+                  {goal.text}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className="stat-card">
-            <h3>Weight Entries</h3>
-            <p>{progressData.weight.length}</p>
-          </div>
+        </section>
         </div>
-      </section>
+
+
+        <section className="progress-suggestions">
+          <h2>Suggestions</h2>
+          <div className="suggestions-list">
+            {generateSuggestions().map((suggestion, index) => (
+              <div key={index} className="suggestion-item">
+                <i className="fas fa-lightbulb"></i>
+                <p>{suggestion}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </div>
     </div>
   );
 };
