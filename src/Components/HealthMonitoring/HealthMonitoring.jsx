@@ -242,57 +242,63 @@ const HealthMonitoring = () => {
       }
     };
 
-    return (
-      <div className="sleep-graph-container">
-        <div className="sleep-graph-nav">
-          <button 
-            className="nav-button"
-            onClick={() => setCurrentDayIndex(prev => Math.min(prev + 1, sleepHistory.length - 1))}
-            disabled={currentDayIndex >= sleepHistory.length - 1}
-          >
-            ← Previous Day
-          </button>
-          <span className="current-date">
-            {new Date(currentRecord.date).toLocaleDateString('en-US', {
-              weekday: 'long',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </span>
-          <button 
-            className="nav-button"
-            onClick={() => setCurrentDayIndex(prev => Math.max(prev - 1, 0))}
-            disabled={currentDayIndex <= 0}
-          >
-            Next Day →
-          </button>
-        </div>
+    return (        
+        <div className="sleep-graph-container">
+          <div className="sleep-graph-nav">
+            <button 
+              className="nav-button"
+              onClick={() => setCurrentDayIndex(prev => Math.min(prev + 1, sleepHistory.length - 1))}
+              disabled={currentDayIndex >= sleepHistory.length - 1}
+            >
+              ← Previous Day
+            </button>
+            <span className="current-date">
+              {new Date(currentRecord.date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </span>
+            <button 
+              className="nav-button"
+              onClick={() => setCurrentDayIndex(prev => Math.max(prev - 1, 0))}
+              disabled={currentDayIndex <= 0}
+            >
+              Next Day →
+            </button>
+          </div>
 
-        <div className="sleep-graph">
-          <Line data={chartData} options={options} />
-        </div>
+          <div className="sleep-graph">
+            <Line data={chartData} options={options} />
+          </div>
 
-        <div className="sleep-info">
-          <div className="sleep-time">
-            <span className="sleep-icon">😴</span>
-            <span>Sleep: {currentRecord.bed_time}</span>
-          </div>
-          <div className="wake-time">
-            <span className="sleep-icon">⏰</span>
-            <span>Wake: {currentRecord.wake_time}</span>
-          </div>
-          <div className="sleep-quality">
-            Quality: {currentRecord.quality}
-          </div>
-          <div className="duration">
-            Duration: {currentRecord.duration} hours
+          <div className="sleep-info">
+            <div className="sleep-time">
+              <span className="sleep-icon">😴</span>
+              <span>Sleep: {currentRecord.bed_time}</span>
+            </div>
+            <div className="wake-time">
+              <span className="sleep-icon">⏰</span>
+              <span>Wake: {currentRecord.wake_time}</span>
+            </div>
+            <div className="sleep-quality">
+              Quality: {currentRecord.quality}
+            </div>
+            <div className="duration">
+              Duration: {currentRecord.duration} hours
+            </div>
           </div>
         </div>
-      </div>
     );
   };
 
   return (
+    <div className='health-monitoring-background'>
+
+      <div className="app-header">    
+      <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" />         
+      </div>
+
     <div className="health-monitoring-container">
       <main className="main-content">
         <div className="health-monitoring">
@@ -301,6 +307,7 @@ const HealthMonitoring = () => {
           <section className="sleep-tracking">
             <h3>Sleep Tracking</h3>
             <form onSubmit={handleSleepSubmit}>
+            <div className="side-by-side">
               <div className="form-group">
                 <label>Sleep Time:</label>
                 <input
@@ -319,8 +326,11 @@ const HealthMonitoring = () => {
                   required
                 />
               </div>
+              </div>  
+
               <div className="form-group">
                 <label>Sleep Quality:</label>
+                
                 <select
                   value={sleepData.quality}
                   onChange={(e) => setSleepData({...sleepData, quality: e.target.value})}
@@ -343,6 +353,7 @@ const HealthMonitoring = () => {
                 {loading ? 'Saving...' : 'Log Sleep'}
               </button>
             </form>
+
 
             {error && (
               <div className="error-message">
@@ -411,6 +422,7 @@ const HealthMonitoring = () => {
           </section>
         </div>
       </main>
+    </div>
     </div>
   );
 };
