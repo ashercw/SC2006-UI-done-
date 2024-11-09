@@ -78,11 +78,27 @@
 
 /* Dark mode specific adjustments */
 [data-theme='dark'] .app-container {
-  background-color: var(--primary-bg-dark);
+  background-color: black;
 }
 
-[data-theme='dark'] .content-wrapper {
-  background-color: var(--primary-bg-dark);
+/* Make app-container transparent only when on homepage */
+[data-theme='dark'] .app-container:has(.background) {
+  background-color: transparent;
+}
+
+/* Dark mode for specific pages */
+[data-theme='dark'] .settings-container,
+[data-theme='dark'] .workout-container,
+[data-theme='dark'] .meal-tracker-container,
+[data-theme='dark'] .progress-container,
+[data-theme='dark'] .posture-container,
+[data-theme='dark'] .health-monitoring-container {
+  background-color: var(--secondary-bg-dark);
+}
+
+/* Keep homepage background as is */
+[data-theme='dark'] .homepage-container {
+  background-color: transparent;
 }
 
 /* Ensure proper contrast for links in both themes */
@@ -99,4 +115,22 @@ a:hover {
 /* Form elements consistency */
 input, select, textarea, button {
   font-family: inherit;
+}
+
+/* Dark mode text adjustments */
+[data-theme='dark'] .settings-container,
+[data-theme='dark'] .workout-container,
+[data-theme='dark'] .meal-tracker-container,
+[data-theme='dark'] .progress-container,
+[data-theme='dark'] .posture-container,
+[data-theme='dark'] .health-monitoring-container {
+  color: var(--text-color-dark);
+}
+
+/* Dark mode card and section backgrounds */
+[data-theme='dark'] .settings-section,
+[data-theme='dark'] .progress-card,
+[data-theme='dark'] .workout-card,
+[data-theme='dark'] .meal-card {
+  background-color: var(--secondary-bg-dark);
 }

@@ -10,6 +10,11 @@
   padding: 80px;
 }
 
+[data-theme='dark'] .progress-background {
+  background-color: #9c27b0;
+  background-image: radial-gradient(black 0.5px, #e1bee7 0.5px);
+}
+
 .app-header {
   width: 80% !important;
   padding: 15px 20px !important;
@@ -86,9 +91,19 @@
   transition: all 0.3s ease;
 }
 
+[data-theme='dark'] .weight-input button,
+[data-theme='dark'] .goal-input button {
+  background-color: #9c27b0;
+}
+
 .weight-input button:hover, .goal-input button:hover {
   background-color: var(--hover-color);
   transform: translateY(-2px);
+}
+
+[data-theme='dark'] .weight-input button:hover,
+[data-theme='dark'] .goal-input button:hover {
+  background-color: #7b1fa2;
 }
 
 /* Weight History */
@@ -141,6 +156,10 @@
   accent-color: var(--accent-color);
 }
 
+[data-theme='dark'] .goal-item input[type="checkbox"] {
+  accent-color: #9c27b0;
+}
+
 .goal-item span {
   flex: 1;
   color: var(--text-color);
@@ -176,6 +195,10 @@
   color: var(--accent-color);
   font-size: 1.2rem;
   margin-top: 0.2rem;
+}
+
+[data-theme='dark'] .suggestion-item i {
+  color: #9c27b0;
 }
 
 .suggestion-item p {
@@ -214,6 +237,10 @@
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
+}
+
+[data-theme='dark'] .stat-card p {
+  color: #9c27b0;
 }
 
 /* Responsive Design */

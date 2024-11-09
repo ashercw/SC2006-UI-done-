@@ -12,13 +12,13 @@
 
   /* Dark Theme */
   --primary-bg-dark: transparent;
-  --secondary-bg-dark: rgba(45, 45, 45, 0.7);
-  --text-color-dark: #ffffff;
+  --secondary-bg-dark: rgba(25, 25, 25, 0.9); /* Darker background */
+  --text-color-dark: #e0e0e0; /* Lighter text for better readability */
   --border-color-dark: #404040;
   --accent-color-dark: #9c27b0; /* Purple for dark mode */
   --hover-color-dark: #ba68c8;
   --shadow-color-dark: rgba(0, 0, 0, 0.3);
-  --input-bg-dark: rgba(61, 61, 61, 0.8);
+  --input-bg-dark: rgba(35, 35, 35, 0.95); /* Darker input background */
 }
 
 /* Default light theme */
@@ -70,6 +70,7 @@ input[type="password"],
 input[type="email"],
 input[type="search"],
 input[type="time"],
+input[type="date"],
 textarea,
 select {
   background-color: var(--input-bg);
@@ -86,6 +87,7 @@ input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="search"]:focus,
 input[type="time"]:focus,
+input[type="date"]:focus,
 textarea:focus,
 select:focus {
   outline: none;
@@ -216,4 +218,17 @@ button:active {
 
 .status-warning {
   color: #ff9800;
+}
+
+/* Dark mode specific text colors */
+[data-theme='dark'] h1,
+[data-theme='dark'] h2,
+[data-theme='dark'] h3,
+[data-theme='dark'] h4,
+[data-theme='dark'] h5,
+[data-theme='dark'] h6,
+[data-theme='dark'] p,
+[data-theme='dark'] span,
+[data-theme='dark'] label {
+  color: var(--text-color);
 }
