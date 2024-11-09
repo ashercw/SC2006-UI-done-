@@ -102,94 +102,94 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            {isLoading && (
-                <div className="loading-overlay">
-                    <div className="spinner"></div>
-                    <p>Please wait...</p>
-                </div>
-            )}
-            
-            <div className="header">
-                <div className="text">
-                    {isResetMode ? "Reset Password" : "Login"}
-                </div>
-                <div className="underline"></div>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="form">
-                <div className="inputs">
-                    <div className="input-group">
-                        <div className="input">
-                            <img src={email_icon} alt="" className="image-size"/>
-                            <input 
-                                type="email" 
-                                placeholder="Email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        {renderErrorMessage('email')}
+            <div className="login-container">
+                {isLoading && (
+                    <div className="loading-overlay">
+                        <div className="spinner"></div>
+                        <p>Please wait...</p>
                     </div>
-                    
-                    {!isResetMode && (
+                )}
+                
+                <div className="header">
+                    <div className="text">
+                        {isResetMode ? "Reset Password" : "Login"}
+                    </div>
+                    <div className="underline"></div>
+                </div>
+                
+                <form onSubmit={handleSubmit} className="form">
+                    <div className="inputs">
                         <div className="input-group">
                             <div className="input">
-                                <img src={password_icon} alt="" className="image-size"/>
+                                <img src={email_icon} alt="" className="image-size"/>
                                 <input 
-                                    type="password" 
-                                    placeholder="Password"
-                                    name="password"
-                                    value={formData.password}
+                                    type="email" 
+                                    placeholder="Email"
+                                    name="email"
+                                    value={formData.email}
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            {renderErrorMessage('password')}
+                            {renderErrorMessage('email')}
+                        </div>
+                        
+                        {!isResetMode && (
+                            <div className="input-group">
+                                <div className="input">
+                                    <img src={password_icon} alt="" className="image-size"/>
+                                    <input 
+                                        type="password" 
+                                        placeholder="Password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+                                {renderErrorMessage('password')}
+                            </div>
+                        )}
+                    </div>
+
+                    {!isResetMode && (
+                        <div className="forgot-password">
+                            Lost Password? <span onClick={() => {
+                                setIsResetMode(true);
+                                showInfo('Enter your email to reset password');
+                            }}>Click Here!</span>
                         </div>
                     )}
-                </div>
 
-                {!isResetMode && (
-                    <div className="forgot-password">
-                        Lost Password? <span onClick={() => {
-                            setIsResetMode(true);
-                            showInfo('Enter your email to reset password');
-                        }}>Click Here!</span>
+                    <div className="submit-container">
+                        {isResetMode ? (
+                            <>
+                                <button type="submit" className="submit">
+                                    Reset Password
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className="submit gray"
+                                    onClick={() => setIsResetMode(false)}
+                                >
+                                    Back to Login
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <button type="submit" className="submit">
+                                    Login
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className="submit gray"
+                                    onClick={() => navigate('/signup')}
+                                >
+                                    Sign Up
+                                </button>
+                            </>
+                        )}
                     </div>
-                )}
-
-                <div className="submit-container">
-                    {isResetMode ? (
-                        <>
-                            <button type="submit" className="submit">
-                                Reset Password
-                            </button>
-                            <button 
-                                type="button" 
-                                className="submit gray"
-                                onClick={() => setIsResetMode(false)}
-                            >
-                                Back to Login
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <button type="submit" className="submit">
-                                Login
-                            </button>
-                            <button 
-                                type="button" 
-                                className="submit gray"
-                                onClick={() => navigate('/signup')}
-                            >
-                                Sign Up
-                            </button>
-                        </>
-                    )}
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
     );
 };
 
