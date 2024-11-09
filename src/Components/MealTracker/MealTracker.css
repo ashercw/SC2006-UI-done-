@@ -19,13 +19,6 @@ body {
     padding: 80px;
 }
 
-[data-theme='dark'] .meal-tracker-background {
-    background-color: #000000;
-    opacity: 0.5;
-    background-image:  linear-gradient(30deg, #7618c9 12%, transparent 12.5%, transparent 87%, #7618c9 87.5%, #7618c9), linear-gradient(150deg, #7618c9 12%, transparent 12.5%, transparent 87%, #7618c9 87.5%, #7618c9), linear-gradient(30deg, #7618c9 12%, transparent 12.5%, transparent 87%, #7618c9 87.5%, #7618c9), linear-gradient(150deg, #7618c9 12%, transparent 12.5%, transparent 87%, #7618c9 87.5%, #7618c9), linear-gradient(60deg, #7618c977 25%, transparent 25.5%, transparent 75%, #7618c977 75%, #7618c977), linear-gradient(60deg, #7618c977 25%, transparent 25.5%, transparent 75%, #7618c977 75%, #7618c977);
-    background-size: 20px 35px;
-    background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
-  }
 
 .meal-tracker {
     margin-top: 5rem;
@@ -38,10 +31,6 @@ body {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-[data-theme='dark'] .meal-tracker {
-    background-color: rgba(156, 39, 176, 0.935);
-    color: white;
-  }
 
 .title {
     text-align: center;
@@ -50,10 +39,6 @@ body {
     color: #050404;
     margin-bottom: 20px;
 }
-
-[data-theme='dark'] .title {
-    color: rgb(246, 245, 245);
-  }
 
 .meal-form-card {
     margin-bottom: 20px;
@@ -114,10 +99,7 @@ body {
     border-radius: 8px;
 }
 
-[data-theme='dark'] .nutrition-summary {
-    background-color: #302a30;
-    color: #f1eef1;
-  }
+
 
 .nutrition-total-container {
     display: flex;
@@ -133,9 +115,6 @@ body {
     width: 100px;
 }
 
-[data-theme='dark'] .nutrition-total-box {
-    background-color: #605864;
-  }
 
 .meal-history {
     margin-top: 20px;
@@ -165,6 +144,3 @@ body {
     font-weight: bold;
 }
 
-[data-theme='dark'] .no-meals-message {
-    color: #fbf8fc;
-  }
