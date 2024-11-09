@@ -3,6 +3,11 @@
   opacity: 0.8;
   background-image:  linear-gradient(#57ac7f 1px, transparent 1px), linear-gradient(to right, #57ac7f 1px, rgb(233, 233, 233) 1px);
   background-size: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
 }
 
 .app-header {
@@ -18,38 +23,50 @@
   margin-bottom: 2rem !important;
 }
 
-.side-by-side {
-  display: flex; /* Make them side by side */
-  align-items: center;
-  gap: 40px; /* Space between the sections */
-  justify-content: center; /* Optional: if you want space between them */
-  flex-wrap: wrap; /* Allow wrapping if the screen size is too small */
-  width: 100%; /*Ensure the parent container takes full width */
-}
 
 .health-monitoring-container {
-  padding: 10px;
-  max-width: 1000px;
   width: 900px;
-  margin: 0 auto;
-  align-items: center !important;
+  max-width: 1200px; /* Adjust as needed */
   background: rgb(185, 210, 191);
-  border-radius: 40px;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.health-monitoring {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.side-by-side {
+  display: flex;
+  gap: 100px; /* Space between the input boxes */
+  justify-content: center; /* Centers the pair within the container */
+  margin-bottom: 20px; /* Space below the side-by-side inputs */
 }
 
 .form-group {
-  margin-bottom: 20px; /* Adjust this value as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-aligns the label and input */
+  margin-bottom: 20px;
 }
 
 label {
-  text-align: left;
-  display: block; /* Make labels block elements for better spacing */
-  margin-bottom: 5px; /* Space between label and input */
+  text-align: left; /* Center-aligns each label */
+  display: block;
+  margin-bottom: 5px;
 }
+
 
 input, select {
   /* width: 95%; Optional: Make inputs full width */
-  width: 300px;
+  width: 200px;
   padding: 8px; /* Optional: Add padding for better aesthetics */
 }
 

@@ -328,6 +328,7 @@ const HealthMonitoring = () => {
               </div>
               </div>  
 
+              <div className="side-by-side">
               <div className="form-group">
                 <label>Sleep Quality:</label>
                 
@@ -348,6 +349,7 @@ const HealthMonitoring = () => {
                   value={sleepData.date}
                   onChange={(e) => setSleepData({...sleepData, date: e.target.value})}
                 />
+              </div>
               </div>
               <button type="submit" disabled={loading}>
                 {loading ? 'Saving...' : 'Log Sleep'}
