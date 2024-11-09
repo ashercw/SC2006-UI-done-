@@ -37,7 +37,7 @@ const PostureTracker = () => {
     const initialize = async () => {
       try {
         // Comment out actual TensorFlow initialization for now
-        /*
+        
         await tf.ready();
         const model = poseDetection.SupportedModels.MoveNet;
         const detectorConfig = {
@@ -46,7 +46,7 @@ const PostureTracker = () => {
           minPoseScore: 0.1
         };
         detectorRef.current = await poseDetection.createDetector(model, detectorConfig);
-        */
+        
 
         // Instead, just set as loaded immediately
         if (mounted) {
