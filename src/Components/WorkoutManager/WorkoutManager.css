@@ -8,13 +8,17 @@
 }
 
 [data-theme='dark'] .workout-manager {
-  background: #9c27b0;
+  background: var(--secondary-bg);
 }
 
 .workout-manager h1 {
   text-align: center;
   color: #333;
   margin-bottom: 2rem;
+}
+
+[data-theme='dark'] .workout-manager h1 {
+  color: var(--text-color);
 }
 
 .workout-container {
@@ -31,6 +35,10 @@
   box-shadow: 0 2px 4px rgba(98, 93, 93, 0.496);
 }
 
+[data-theme='dark'] .calendar-section {
+  background: var(--input-bg);
+}
+
 .workout-calendar {
   width: 100% !important;
   border: none !important;
@@ -43,6 +51,10 @@
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+[data-theme='dark'] .tracking-section {
+  background: var(--input-bg);
 }
 
 .workout-form {
@@ -62,6 +74,10 @@
   color: #555;
 }
 
+[data-theme='dark'] .form-group label {
+  color: var(--text-color);
+}
+
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -69,6 +85,14 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+}
+
+[data-theme='dark'] .form-group input,
+[data-theme='dark'] .form-group select,
+[data-theme='dark'] .form-group textarea {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
 }
 
 .form-group textarea {
@@ -108,6 +132,10 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+[data-theme='dark'] .summary-section {
+  background: var(--input-bg);
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -122,10 +150,18 @@
   border-radius: 8px;
 }
 
+[data-theme='dark'] .summary-item {
+  background: var(--secondary-bg);
+}
+
 .summary-item h3 {
   color: #666;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
+}
+
+[data-theme='dark'] .summary-item h3 {
+  color: var(--text-color);
 }
 
 .summary-item p {
@@ -134,12 +170,20 @@
   font-weight: 600;
 }
 
+[data-theme='dark'] .summary-item p {
+  color: var(--text-color);
+}
+
 /* Workouts List Section */
 .workouts-list-section {
   background: rgba(255, 255, 255, 0.835);
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+[data-theme='dark'] .workouts-list-section {
+  background: var(--input-bg);
 }
 
 .workouts-list {
@@ -156,6 +200,7 @@
 }
 
 [data-theme='dark'] .workout-item {
+  background: var(--secondary-bg);
   border-left: 4px solid #9c27b0;
 }
 
@@ -165,10 +210,18 @@
   font-size: 1.1rem;
 }
 
+[data-theme='dark'] .workout-item h3 {
+  color: var(--text-color);
+}
+
 .workout-item p {
   color: #666;
   margin: 0.3rem 0;
   font-size: 0.95rem;
+}
+
+[data-theme='dark'] .workout-item p {
+  color: var(--text-color);
 }
 
 /* Responsive Design */
@@ -192,12 +245,24 @@
   color: #000 !important;
 }
 
+[data-theme='dark'] .react-calendar__tile {
+  color: var(--text-color) !important;
+}
+
 .react-calendar__month-view__days__day--weekend {
   color: #d10000 !important;
 }
 
+[data-theme='dark'] .react-calendar__month-view__days__day--weekend {
+  color: #ff5252 !important;
+}
+
 .react-calendar__navigation button {
   color: #000 !important;
+}
+
+[data-theme='dark'] .react-calendar__navigation button {
+  color: var(--text-color) !important;
 }
 
 .react-calendar__tile--active {
@@ -219,6 +284,10 @@
 
 .react-calendar__tile:hover {
   background: #f0f0f0 !important;
+}
+
+[data-theme='dark'] .react-calendar__tile:hover {
+  background: #7b1fa2 !important;
 }
 
 .react-calendar__tile--active:hover {

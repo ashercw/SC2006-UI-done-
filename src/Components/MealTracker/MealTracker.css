@@ -19,6 +19,10 @@ body {
     padding: 80px;
 }
 
+[data-theme='dark'] .meal-tracker-background {
+    background-color: #e1bee7;
+    background-image: radial-gradient( ellipse farthest-corner at 15px 15px , #9c27b0, #9c27b0 50%, #e1bee7 50%);
+}
 
 .meal-tracker {
     margin-top: 5rem;
@@ -31,6 +35,9 @@ body {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+[data-theme='dark'] .meal-tracker {
+    background: var(--secondary-bg);
+}
 
 .title {
     text-align: center;
@@ -38,6 +45,10 @@ body {
     font-weight: 700;
     color: #050404;
     margin-bottom: 20px;
+}
+
+[data-theme='dark'] .title {
+    color: #ffffff;
 }
 
 .meal-form-card {
@@ -63,8 +74,18 @@ body {
     transition: border-color 0.3s;
 }
 
+[data-theme='dark'] .meal-input {
+    border: 2px solid #9c27b0;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
 .meal-input:focus {
     border-color: #2e7d32;
+}
+
+[data-theme='dark'] .meal-input:focus {
+    border-color: #7b1fa2;
 }
 
 .submit-button {
@@ -80,8 +101,16 @@ body {
     transition: background-color 0.3s;
 }
 
+[data-theme='dark'] .submit-button {
+    background-color: #7b1fa2;
+}
+
 .submit-button:hover {
     background-color: #15aa1c;
+}
+
+[data-theme='dark'] .submit-button:hover {
+    background-color: #6a1b9a;
 }
 
 .error-message {
@@ -99,6 +128,10 @@ body {
     border-radius: 8px;
 }
 
+[data-theme='dark'] .nutrition-summary {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
 
 .nutrition-total-container {
     display: flex;
@@ -114,6 +147,9 @@ body {
     width: 100px;
 }
 
+[data-theme='dark'] .nutrition-total-box {
+    background-color: #7b1fa2;
+}
 
 .meal-history {
     margin-top: 20px;
@@ -127,14 +163,27 @@ body {
     background-color: #f9f9f9;
 }
 
+[data-theme='dark'] .meal-item-card {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+}
+
 .meal-name {
     font-weight: 500;
     color: #4CAF50;
 }
 
+[data-theme='dark'] .meal-name {
+    color: #9c27b0;
+}
+
 .meal-info {
     color: #434242;
     margin-top: 4px;
+}
+
+[data-theme='dark'] .meal-info {
+    color: var(--text-color);
 }
 
 .no-meals-message {
@@ -143,3 +192,6 @@ body {
     font-weight: bold;
 }
 
+[data-theme='dark'] .no-meals-message {
+    color: var(--text-color);
+}
