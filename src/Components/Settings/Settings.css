@@ -110,44 +110,6 @@
   color: white;
 }
 
-.settings-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-.save-button, .reset-button {
-  padding: 0.8rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.save-button {
-  background-color: var(--accent-color);
-  color: white;
-}
-
-.save-button:hover {
-  background-color: var(--hover-color);
-  transform: translateY(-2px);
-}
-
-.reset-button {
-  background-color: var(--input-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-}
-
-.reset-button:hover {
-  background-color: var(--border-color);
-  transform: translateY(-2px);
-}
-
 .time-input {
   background-color: var(--input-bg);
   border: 1px solid var(--border-color);
@@ -204,10 +166,6 @@
   .time-input {
     width: 100%;
     margin-left: 0;
-  }
-
-  .settings-actions {
-    flex-direction: column;
   }
 
   .save-button,

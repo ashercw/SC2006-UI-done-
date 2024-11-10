@@ -38,6 +38,19 @@ const Homepage = () => {
     monthlyGoal: 20
   };
 
+  const [reminderTimes, setReminderTimes] = useState({
+    workout: '09:00',
+    meal: '12:00'
+  });
+
+  useEffect(() => {
+    // Fetch reminder times from localStorage on component mount
+    const savedTimes = localStorage.getItem('reminderTimes');
+    if (savedTimes) {
+      setReminderTimes(JSON.parse(savedTimes));
+    }
+  }, []);
+
   // Update state when localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {

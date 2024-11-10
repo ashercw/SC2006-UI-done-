@@ -10,10 +10,23 @@
   padding: 80px;
 }
 
+[data-theme='dark'] .health-monitoring-background {
+background-color: #b19cd9;
+opacity: 0.8;
+background-image: 
+linear-gradient(#9a70c7 1px, transparent 1px), linear-gradient(to right, #9a70c7 1px, #e6e0f3 1px);
+background-size: 20px 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 80px;
+}
+
 .app-header {
   width: 80% !important;
   padding: 15px 20px !important;
-  background-color: #a0b2beed !important;
+  background-color: #a0b2beed;
   border-radius: 35px !important;
   color: white !important;
   text-align: center !important;
@@ -23,6 +36,14 @@
   margin-bottom: 2rem !important;
 }
 
+[data-theme='dark'] .app-header{
+  background: var(--secondary-bg) !important;
+}
+
+.LogSleep {
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
 
 .health-monitoring-container {
   width: 850px;
@@ -65,15 +86,11 @@ label {
   margin-bottom: 5px;
 }
 
-
 input, select {
   /* width: 95%; Optional: Make inputs full width */
   width: 250px;
   padding: 8px; /* Optional: Add padding for better aesthetics */
 }
-
-
-/* ... (keep existing styles until sleep graph section) ... */
 
 /* Sleep Graph Styles */
 .sleep-graph-container {
@@ -143,12 +160,12 @@ input, select {
   font-size: 20px;
 }
 
-/* ... (keep rest of existing styles) ... */
 
 /* Sleep History Styles */
 .sleep-history {
   margin-top: 30px;
   margin-bottom: 20px;
+  min-width: 50vw;
 }
 
 .history-table {
@@ -182,6 +199,7 @@ th {
   background-color: #0a192f;
   border-radius: 8px 8px 0 0;
   color: #fff;
+  min-width: 50vw;
 }
 
 .nav-button {

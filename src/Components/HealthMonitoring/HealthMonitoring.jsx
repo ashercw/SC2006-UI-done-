@@ -64,7 +64,6 @@ const HealthMonitoring = () => {
 
   useEffect(() => {
     fetchSleepHistory();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); 
 
   const getAuthHeaders = () => {
@@ -353,7 +352,7 @@ const HealthMonitoring = () => {
                 />
               </div>
               </div>
-              <button type="submit" disabled={loading}>
+              <button className="LogSleep" type="submit" disabled={loading}>
                 {loading ? 'Saving...' : 'Log Sleep'}
               </button>
             </form>

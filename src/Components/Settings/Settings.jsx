@@ -71,13 +71,23 @@ const Settings = () => {
       }
     }
 
-    setSettings(prev => ({
-      ...prev,
-      notifications: {
-        ...prev.notifications,
-        [setting]: !prev.notifications[setting]
+    setSettings(prev => {
+      const updatedSettings = {
+        ...prev,
+        notifications: {
+          ...prev.notifications,
+          [setting]: !prev.notifications[setting]
+        }
+      };
+
+      // If the notification is enabled, show a popup
+      if (updatedSettings.notifications[setting]) {
+        showPopup(setting);
       }
-    }));
+
+      return updatedSettings;
+    });
+
     setSaveStatus('');
   };
 
@@ -114,17 +124,6 @@ const Settings = () => {
     setSaveStatus('');
   };
 
-  const handlePrivacyChange = (setting) => {
-    setSettings(prev => ({
-      ...prev,
-      privacy: {
-        ...prev.privacy,
-        [setting]: !prev.privacy[setting]
-      }
-    }));
-    setSaveStatus('');
-  };
-
   const handleReminderTimeChange = (type, time) => {
     setReminderTimes(prev => ({
       ...prev,
@@ -132,34 +131,8 @@ const Settings = () => {
     }));
   };
 
-  const handleSave = () => {
-    // Save all settings to localStorage
-    localStorage.setItem('userSettings', JSON.stringify(settings));
-    localStorage.setItem('reminderTimes', JSON.stringify(reminderTimes));
-
-    // Schedule notifications if enabled
-    if (settings.notifications.workoutReminders) {
-      createWorkoutReminder();
-    }
-    if (settings.notifications.mealReminders) {
-      createMealReminder();
-    }
-
-    setSaveStatus('Settings saved successfully!');
-    setTimeout(() => setSaveStatus(''), 3000);
-  };
-
-  const handleReset = () => {
-    setSettings(defaultSettings);
-    setReminderTimes({
-      workout: '09:00',
-      meal: '12:00'
-    });
-    localStorage.removeItem('userSettings');
-    localStorage.removeItem('reminderTimes');
-    setTheme('light'); // Reset theme to light
-    setSaveStatus('Settings reset to defaults!');
-    setTimeout(() => setSaveStatus(''), 3000);
+  const showPopup = (setting) => {
+    alert(`You enabled ${setting.replace(/([A-Z])/g, ' $1').toLowerCase()} reminder! Set your time.`);
   };
 
   return (
@@ -242,57 +215,11 @@ const Settings = () => {
               <option value="french">French</option>
             </select>
           </div>
-          <div className="setting-item">
-            <label>Units</label>
-            <select
-              value={settings.preferences.units}
-              onChange={(e) => handlePreferenceChange('units', e.target.value)}
-            >
-              <option value="metric">Metric (kg, km)</option>
-              <option value="imperial">Imperial (lbs, miles)</option>
-            </select>
-          </div>
         </div>
       </section>
-
-      <section className="settings-section">
-        <h2>Privacy</h2>
-        <div className="settings-group">
-          <div className="setting-item">
-            <label>
-              <input
-                type="checkbox"
-                checked={settings.privacy.shareProgress}
-                onChange={() => handlePrivacyChange('shareProgress')}
-              />
-              Share Progress with Friends
-            </label>
-          </div>
-          <div className="setting-item">
-            <label>
-              <input
-                type="checkbox"
-                checked={settings.privacy.publicProfile}
-                onChange={() => handlePrivacyChange('publicProfile')}
-              />
-              Public Profile
-            </label>
-          </div>
-        </div>
-      </section>
-
-      {saveStatus && (
-        <div className={`settings-status ${saveStatus.includes('error') ? 'error' : 'success'}`}>
-          {saveStatus}
-        </div>
-      )}
-
-      <div className="settings-actions">
-        <button className="save-button" onClick={handleSave}>Save Changes</button>
-        <button className="reset-button" onClick={handleReset}>Reset to Defaults</button>
-      </div>
     </div>
   );
 };
 
 export default Settings;
+
