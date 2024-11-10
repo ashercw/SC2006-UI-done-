@@ -4,16 +4,14 @@ import './Homepage.css';
 
 const Homepage = () => {
   const [weeklyData, setWeeklyData] = useState(() => {
-    // Initialize or get weekly data from localStorage
     const storedData = localStorage.getItem('weeklyData');
     if (storedData) {
       return JSON.parse(storedData);
     }
     
-    // Default structure for weekly data
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const today = new Date().getDay(); // 0 is Sunday, 1 is Monday, etc.
-    const adjustedToday = today === 0 ? 6 : today - 1; // Convert to 0 = Monday, 6 = Sunday
+    const today = new Date().getDay();
+    const adjustedToday = today === 0 ? 6 : today - 1;
 
     return days.map((day, index) => ({
       day,
@@ -23,7 +21,6 @@ const Homepage = () => {
     }));
   });
 
-  // Get latest values from localStorage
   const [workoutsCompleted, setWorkoutsCompleted] = useState(
     parseInt(localStorage.getItem('workoutsCompleted') || '0')
   );
@@ -31,27 +28,40 @@ const Homepage = () => {
     parseInt(localStorage.getItem('caloriesBurned') || '0')
   );
 
-  const userProgress = {
-    workoutsCompleted: workoutsCompleted,
-    caloriesBurned: caloriesBurned,
-    weeklyGoal: 5,
-    monthlyGoal: 20
-  };
+  const [settings, setSettings] = useState(() => {
+    const savedSettings = localStorage.getItem('userSettings');
+    return savedSettings ? JSON.parse(savedSettings) : {
+      notifications: {
+        workoutReminders: false,
+        mealReminders: false
+      }
+    };
+  });
 
-  const [reminderTimes, setReminderTimes] = useState({
-    workout: '09:00',
-    meal: '12:00'
+  const [reminderTimes, setReminderTimes] = useState(() => {
+    const savedTimes = localStorage.getItem('reminderTimes');
+    return savedTimes ? JSON.parse(savedTimes) : {
+      workout: '09:00',
+      meal: '12:00'
+    };
   });
 
   useEffect(() => {
-    // Fetch reminder times from localStorage on component mount
-    const savedTimes = localStorage.getItem('reminderTimes');
-    if (savedTimes) {
-      setReminderTimes(JSON.parse(savedTimes));
-    }
+    // Listen for settings changes
+    const handleStorageChange = (e) => {
+      if (e.key === 'userSettings') {
+        const newSettings = JSON.parse(e.newValue);
+        setSettings(newSettings);
+      } else if (e.key === 'reminderTimes') {
+        const newTimes = JSON.parse(e.newValue);
+        setReminderTimes(newTimes);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // Update state when localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {
       const newWorkouts = parseInt(localStorage.getItem('workoutsCompleted') || '0');
@@ -60,7 +70,6 @@ const Homepage = () => {
       setWorkoutsCompleted(newWorkouts);
       setCaloriesBurned(newCalories);
 
-      // Update today's data in weeklyData
       setWeeklyData(prevData => {
         return prevData.map(day => {
           if (day.isToday) {
@@ -75,10 +84,8 @@ const Homepage = () => {
       });
     };
 
-    // Listen for storage changes
     window.addEventListener('storage', handleStorageChange);
     
-    // Check for updates every second
     const interval = setInterval(() => {
       handleStorageChange();
     }, 1000);
@@ -90,11 +97,9 @@ const Homepage = () => {
   }, []);
 
   useEffect(() => {
-    // Save weekly data to localStorage whenever it changes
     localStorage.setItem('weeklyData', JSON.stringify(weeklyData));
   }, [weeklyData]);
 
-  // Function to reset counters
   const resetCounters = () => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const today = new Date().getDay();
@@ -111,15 +116,17 @@ const Homepage = () => {
     setWorkoutsCompleted(0);
     setCaloriesBurned(0);
     
-    // Reset localStorage values
     localStorage.setItem('weeklyData', JSON.stringify(newWeeklyData));
     localStorage.setItem('workoutsCompleted', '0');
     localStorage.setItem('caloriesBurned', '0');
   };
 
-  // Calculate max values for scaling
-  const maxWorkouts = Math.max(...weeklyData.map(d => d.workouts));
-  const maxCalories = Math.max(...weeklyData.map(d => d.calories));
+  const userProgress = {
+    workoutsCompleted: workoutsCompleted,
+    caloriesBurned: caloriesBurned,
+    weeklyGoal: 5,
+    monthlyGoal: 20
+  };
 
   return (
     <div className="homepage-container">
@@ -132,7 +139,6 @@ const Homepage = () => {
 
       {/* Main Content */}
       <main className="main-content">
-
         {/* Fitness App Logo */}
         <div className="app-logo">
           <img src= "/fitnessApp_logo.png" alt="Fitness App Logo" className="logo" /> 
@@ -144,6 +150,7 @@ const Homepage = () => {
           <p>Here's your fitness journey at a glance</p>
           <button onClick={resetCounters} className="reset-button">Reset Progress</button>
         </div>
+
         {/* Progress Cards */}
         <div className="progress-cards">
           <div className="progress-card">
@@ -168,6 +175,33 @@ const Homepage = () => {
             <p>This week</p>
           </div>
         </div>
+
+        {/* Reminders Section */}
+        {(settings.notifications?.workoutReminders || settings.notifications?.mealReminders) && (
+          <section className="reminders-section">
+            <h2>Today's Reminders</h2>
+            <div className="reminders-list">
+              {settings.notifications?.workoutReminders && (
+                <div className="reminder-item">
+                  <span className="reminder-icon">🏋️</span>
+                  <div className="reminder-content">
+                    <h3>Workout Reminder</h3>
+                    <p>Scheduled for {reminderTimes.workout}</p>
+                  </div>
+                </div>
+              )}
+              {settings.notifications?.mealReminders && (
+                <div className="reminder-item">
+                  <span className="reminder-icon">🍽️</span>
+                  <div className="reminder-content">
+                    <h3>Meal Reminder</h3>
+                    <p>Scheduled for {reminderTimes.meal}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Quick Actions */}
         <section className="quick-actions">

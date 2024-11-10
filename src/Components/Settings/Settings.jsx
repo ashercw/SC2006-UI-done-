@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useNotification } from '../../hooks/useNotification'; // Import the hook
 import { 
   requestNotificationPermission, 
   createWorkoutReminder, 
@@ -9,6 +10,7 @@ import { convertWorkoutStats } from '../../utils/unitConverter';
 import './Settings.css';
 
 const Settings = () => {
+  const { showSuccess, showError, showInfo } = useNotification(); // Destructure the hook
   const { theme, setTheme } = useTheme();
   const [notificationPermission, setNotificationPermission] = useState(
     ("Notification" in window) ? Notification.permission : "denied"
@@ -37,9 +39,12 @@ const Settings = () => {
   });
 
   const [saveStatus, setSaveStatus] = useState('');
-  const [reminderTimes, setReminderTimes] = useState({
-    workout: '09:00',
-    meal: '12:00'
+  const [reminderTimes, setReminderTimes] = useState(() => {
+    const savedTimes = localStorage.getItem('reminderTimes');
+    return savedTimes ? JSON.parse(savedTimes) : {
+      workout: '09:00',
+      meal: '12:00'
+    };
   });
 
   useEffect(() => {
@@ -61,6 +66,16 @@ const Settings = () => {
     }
   }, [setTheme, theme]);
 
+  // Save settings whenever they change
+  useEffect(() => {
+    localStorage.setItem('userSettings', JSON.stringify(settings));
+  }, [settings]);
+
+  // Save reminder times whenever they change
+  useEffect(() => {
+    localStorage.setItem('reminderTimes', JSON.stringify(reminderTimes));
+  }, [reminderTimes]);
+
   const handleNotificationChange = async (setting) => {
     if (!notificationPermission || notificationPermission === "denied") {
       const permission = await requestNotificationPermission();
@@ -70,7 +85,7 @@ const Settings = () => {
         return;
       }
     }
-
+  
     setSettings(prev => {
       const updatedSettings = {
         ...prev,
@@ -79,17 +94,21 @@ const Settings = () => {
           [setting]: !prev.notifications[setting]
         }
       };
-
-      // If the notification is enabled, show a popup
-      if (updatedSettings.notifications[setting]) {
-        showPopup(setting);
+  
+      // Save to localStorage immediately
+      localStorage.setItem('userSettings', JSON.stringify(updatedSettings));
+  
+      // Only show the popup for workout/reminder and meal reminder, but not progress updates
+      if (updatedSettings.notifications[setting] && setting !== 'progressUpdates') {
+        showSuccess(`You enabled ${setting.replace(/([A-Z])/g, ' $1').toLowerCase()} reminder! Set your time.`);
       }
-
+  
       return updatedSettings;
     });
-
+  
     setSaveStatus('');
   };
+  
 
   const handlePreferenceChange = (setting, value) => {
     setSettings(prev => {
@@ -100,6 +119,9 @@ const Settings = () => {
           [setting]: value
         }
       };
+
+      // Save to localStorage immediately
+      localStorage.setItem('userSettings', JSON.stringify(newSettings));
 
       // If theme is changing, update it immediately
       if (setting === 'theme') {
@@ -125,14 +147,15 @@ const Settings = () => {
   };
 
   const handleReminderTimeChange = (type, time) => {
-    setReminderTimes(prev => ({
-      ...prev,
-      [type]: time
-    }));
-  };
-
-  const showPopup = (setting) => {
-    alert(`You enabled ${setting.replace(/([A-Z])/g, ' $1').toLowerCase()} reminder! Set your time.`);
+    setReminderTimes(prev => {
+      const newTimes = {
+        ...prev,
+        [type]: time
+      };
+      // Save to localStorage immediately
+      localStorage.setItem('reminderTimes', JSON.stringify(newTimes));
+      return newTimes;
+    });
   };
 
   return (
@@ -178,16 +201,6 @@ const Settings = () => {
               />
             )}
           </div>
-          <div className="setting-item">
-            <label>
-              <input
-                type="checkbox"
-                checked={settings.notifications.progressUpdates}
-                onChange={() => handleNotificationChange('progressUpdates')}
-              />
-              Progress Updates
-            </label>
-          </div>
         </div>
       </section>
 
@@ -222,4 +235,3 @@ const Settings = () => {
 };
 
 export default Settings;
-
