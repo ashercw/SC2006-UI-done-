@@ -1,12 +1,46 @@
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 from . import db
 from .models import User, Sleep, WorkoutList
 from datetime import datetime, timedelta
 import jwt
 from functools import wraps
-from flask import current_app
 from werkzeug.security import generate_password_hash
 import os
+import random
+import string
+from flask_mail import Mail, Message
+import traceback
+
+mail = Mail()
+
+def generate_temp_password(length=12):
+    """Generate a random temporary password"""
+    characters = string.ascii_letters + string.digits + "!@#$%^&*"
+    return ''.join(random.choice(characters) for i in range(length))
+
+def send_password_email(email, password):
+    """Send email with temporary password"""
+    try:
+        msg = Message(
+            'Your Temporary Password',
+            sender=current_app.config['MAIL_DEFAULT_SENDER'],
+            recipients=[email]
+        )
+        msg.body = f'''Your temporary password is: {password}
+        
+Please use this password to log in and change it immediately for security purposes.
+
+Best regards,
+The Fitness App Team
+'''
+        print(f"Attempting to send email to {email}")  # Debug print
+        mail.send(msg)
+        print("Email sent successfully")  # Debug print
+        return True
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")  # Debug print
+        print(f"Traceback: {traceback.format_exc()}")  # Print full traceback
+        return False
 
 def token_required(f):
     @wraps(f)
@@ -24,6 +58,9 @@ def token_required(f):
     return decorated
 
 def init_auth_routes(app):
+    # Initialize Flask-Mail with the app
+    mail.init_app(app)
+
     @app.route('/api/auth/signup', methods=['POST'])
     def signup():
         data = request.get_json()
@@ -108,26 +145,50 @@ def init_auth_routes(app):
 
     @app.route('/api/auth/reset-password', methods=['POST'])
     def reset_password():
-        data = request.get_json()
-        
-        if not data or not data.get('email'):
-            return jsonify({'error': 'Email is required'}), 400
+        try:
+            data = request.get_json()
+            
+            if not data or not data.get('email'):
+                return jsonify({'error': 'Email is required'}), 400
 
-        user = User.query.filter_by(email=data['email']).first()
-        
-        if not user:
-            # For security reasons, don't reveal if email exists
-            return jsonify({'message': 'If the email exists, a reset link will be sent'}), 200
+            print(f"Received reset password request for email: {data['email']}")  # Debug print
+            
+            user = User.query.filter_by(email=data['email']).first()
+            
+            if not user:
+                print("User not found")  # Debug print
+                return jsonify({'message': 'If the email exists, a password will be sent'}), 200
 
-        # In a real application, you would:
-        # 1. Generate a reset token
-        # 2. Save it to the database with an expiration
-        # 3. Send an email with the reset link
-        # For now, we'll just return a success message
-        
-        return jsonify({
-            'message': 'If the email exists, a reset link will be sent'
-        }), 200
+            # Generate temporary password
+            temp_password = generate_temp_password()
+            print(f"Generated temporary password")  # Debug print
+            
+            # Update user's password in database
+            user.password = temp_password
+            db.session.commit()
+            print(f"Password updated in database")  # Debug print
+            
+            # Print mail configuration
+            print(f"Mail Configuration:")
+            print(f"MAIL_SERVER: {current_app.config.get('MAIL_SERVER')}")
+            print(f"MAIL_PORT: {current_app.config.get('MAIL_PORT')}")
+            print(f"MAIL_USE_TLS: {current_app.config.get('MAIL_USE_TLS')}")
+            print(f"MAIL_USERNAME: {current_app.config.get('MAIL_USERNAME')}")
+            print(f"MAIL_DEFAULT_SENDER: {current_app.config.get('MAIL_DEFAULT_SENDER')}")
+            
+            # Send email with temporary password
+            if send_password_email(user.email, temp_password):
+                return jsonify({
+                    'message': 'Your password has been sent to your email'
+                }), 200
+            else:
+                return jsonify({'error': 'Failed to send email'}), 500
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error in reset_password: {str(e)}")  # Debug print
+            print(f"Traceback: {traceback.format_exc()}")  # Print full traceback
+            return jsonify({'error': 'Failed to reset password'}), 500
 
     @app.route('/api/auth/verify-token', methods=['GET'])
     @token_required

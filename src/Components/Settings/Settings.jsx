@@ -98,11 +98,6 @@ const Settings = () => {
       // Save to localStorage immediately
       localStorage.setItem('userSettings', JSON.stringify(updatedSettings));
   
-      // Only show the popup for workout/reminder and meal reminder, but not progress updates
-      if (updatedSettings.notifications[setting] && setting !== 'progressUpdates') {
-        showSuccess(`You enabled ${setting.replace(/([A-Z])/g, ' $1').toLowerCase()} reminder! Set your time.`);
-      }
-  
       return updatedSettings;
     });
   
